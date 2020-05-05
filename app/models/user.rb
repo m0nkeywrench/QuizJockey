@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   validates :password, :name, format: { with: /\A[a-z0-9]+\z/i }
-  validates :name, :nickname, null: false
+  validates :name, :nickname, presence: true
   validates :name, uniqueness: true
+
+  has_many :courses, dependent: :destroy
 end
