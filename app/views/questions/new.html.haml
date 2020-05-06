@@ -1,0 +1,29 @@
+= @course.name
+= @course.description
+- if @course.questions.present?
+  - @course.questions.each do |q|
+    = q.sentence
+    = q.answer
+    = "#{q.wrong1},#{q.wrong2},#{q.wrong3}"
+
+= form_with model: [@course, @question], local: true do |f|
+
+  = f.label :sentence
+  = f.text_area :sentence
+
+  = f.label :answer
+  = f.text_field :answer
+
+  = f.label :wrong1
+  = f.text_field :wrong1
+
+  = f.label :wrong2
+  = f.text_field :wrong2
+
+  = f.label :wrong3
+  = f.text_field :wrong3
+
+  = f.label :commentary
+  = f.text_area :commentary
+
+  = f.submit
