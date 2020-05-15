@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
 
   def index
+    @questions = Course.find(params[:course_id]).questions
   end
 
   def new
