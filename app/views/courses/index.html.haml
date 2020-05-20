@@ -1,8 +1,4 @@
 = link_to "QuizJockey", root_path
-%br
-
-- @courses.each do |course|
-  = link_to course.name, course_questions_path(course.id)
 
 - if user_signed_in?
   = link_to "My Page", user_path(current_user.id)
@@ -10,3 +6,6 @@
 - else
   = link_to "Sign up", new_user_registration_path
   = link_to "Sign In", new_user_session_path
+%br/
+- @courses.each do |course|
+  = link_to course.name, course_questions_path(course.id)
