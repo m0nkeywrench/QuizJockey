@@ -8,6 +8,10 @@ class CoursesController < ApplicationController
     @course = Course.new
   end
 
+  def show
+    @course = Course.find(params[:id])
+  end
+
   def create
     course = Course.create(course_params)
     redirect_to new_course_question_path(course_id: course.id)
