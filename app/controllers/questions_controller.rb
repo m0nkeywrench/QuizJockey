@@ -10,9 +10,13 @@ class QuestionsController < ApplicationController
   end
 
   def create
-    Question.create(question_params)
+    @question = Question.new(question_params)
     @course = Course.find(params[:course_id])
-    redirect_to new_course_question_path(params[:course_id])
+    if @question.save
+      redirect_to action: :new
+    else
+      render action: :new
+    end
   end
   
   private

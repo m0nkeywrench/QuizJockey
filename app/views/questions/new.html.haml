@@ -12,6 +12,9 @@
 
 = form_with model: [@course, @question], local: true do |f|
 
+  - if @question.errors.any?
+    = "#{@question.errors.count}件のエラーが発生しました"
+
   = f.label :sentence
   = f.text_area :sentence
 
