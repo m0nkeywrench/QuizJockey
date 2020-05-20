@@ -1,11 +1,14 @@
 %h1 問題作成
+%h3 コース情報
 = @course.name
 = @course.description
+%h3 問題情報
 - if @course.questions.present?
   - @course.questions.each do |q|
     = q.sentence
     = q.answer
     = "#{q.wrong1},#{q.wrong2},#{q.wrong3}"
+    %br/
 
 = form_with model: [@course, @question], local: true do |f|
 

@@ -9,5 +9,6 @@
   = link_to "Sign up", new_user_registration_path
   = link_to "Sign In", new_user_session_path
 %br/
+%h3 クイズ一覧
 - @courses.each do |course|
   = link_to course.name, course_path(course.id)
