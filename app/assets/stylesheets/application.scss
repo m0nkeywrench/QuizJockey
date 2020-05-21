@@ -1,5 +1,7 @@
 @import "reset";
 @import "config/variables";
 @import "mixin/mixins";
-@import "common";
-@import "header";
+@import "modules/common";
+@import "modules/header";
+@import "modules/footer";
+@import "modules/course_list";

@@ -1,0 +1,26 @@
+body {
+  background-color: whitesmoke;
+}
+
+.main {
+  display: flex;
+  justify-content: flex-start;
+  width: 100vw;
+
+  &__content {
+    width: 80%;
+  }
+
+  &__sidebar {
+    width: 20%;
+    background-color: silver;
+  }
+}
+
+.white-link {
+  color: white;
+}
+
+.white-link:hover {
+  opacity: 0.6;
+}
