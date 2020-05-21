@@ -1,0 +1,28 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  background-color: #20b2aa;
+  padding: 0 5%;
+  line-height: 60px;
+
+  &__left {
+    display: flex;
+    justify-content: flex-start;
+
+    &--title {
+      font-size: 2rem;
+      font-weight: 700;
+      padding: 0 3%;
+    }
+  }
+
+  &__right {
+    display: flex;
+    justify-content: flex-end;
+
+    &--link {
+      margin: 0 15px;
+      font-weight: 700;
+    }
+  }
+}
