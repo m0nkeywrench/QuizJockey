@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   
   def index
-    @courses = Course.includes(:questions)
+    @courses = Course.includes(:questions, :user)
   end
 
   def new

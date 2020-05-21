@@ -1,8 +1,25 @@
 = render "shared/header"
 
-%h1 トップページ
+.main
+  .main__content
+    .courseList
+      .courseList__header
+        クイズ一覧
+      .courseList__main
+        - @courses.each do |course|
+          = link_to course_path(course.id) do
+            .course
+              .course__left
+                .course__left--icon
+                  = #アイコンを出す
+                .course__left--name
+                  = "by @#{course.user.name}" #ユーザーネーム
+              .course__right
+                .course__right--name
+                  = course.name #コース名
+                .course__right--desc
+                  = course.description #コース概要
 
-%br/
-%h3 クイズ一覧
-- @courses.each do |course|
-  = link_to course.name, course_path(course.id)
+  .main__sidebar
+
+= render "shared/footer"
