@@ -1,3 +1,25 @@
-%h1 コース詳細
-= link_to "始める", course_questions_path(@course.id)
-= link_to "戻る", courses_path
+= render "shared/header"
+
+.main
+  .main__content
+    .detail
+      .detail__header
+        .detail__header--title
+          = @course.name
+      .detail__main
+        .detail__main--numOfQuestion
+          = "全#{@course.questions.length}問"
+        .detail__main--desc
+          = simple_format(@course.description)
+      .detail__footer
+        .detail__footer__left
+          .detail__footer__left--inner
+          = "presented by @#{@course.user.name}"
+        .detail__footer__right
+          .detail__footer__right--inner
+            = link_to "始める", course_questions_path(@course.id), class: "link-button main-color"
+          .detail__footer__right--inner
+            = link_to "戻る", :back, class: "link-button gray"
+  .main__sidebar
+
+= render "shared/footer"

@@ -62,6 +62,6 @@
 }
 
 .course:active {
-  border-bottom-color: transparent;
-  transform: translateY(0.1875em);
+  transform: translateY(0.03em);
+  box-shadow: initial;
 }

@@ -15,7 +15,7 @@ class CoursesController < ApplicationController
   def create
     @course = Course.new(course_params)
     if @course.save
-      redirect_to new_course_question_path(course_id: course.id)
+      redirect_to new_course_question_path(course_id: @course.id)
     else
       render action: :new
     end

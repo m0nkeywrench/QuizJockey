@@ -14,13 +14,43 @@ body {
   &__sidebar {
     width: 20%;
     background-color: silver;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.25);
   }
 }
 
+// リンクの文字を白に
 .white-link {
   color: white;
 }
 
 .white-link:hover {
   opacity: 0.6;
+}
+
+// リンクボタン
+.link-button {
+  display: block;
+  text-align: center;
+  line-height: 60px;
+  width: 120px;
+  border-radius: 10px;
+  color: white;
+}
+
+.link-button:hover {
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+  transform: translateY(-0.1875em);
+}
+
+.link-button:active {
+  transform: translateY(0.03em);
+  box-shadow: initial;
+}
+
+.main-color {
+  background-color: #20b2aa;
+}
+
+.gray {
+  background-color: silver;
 }
