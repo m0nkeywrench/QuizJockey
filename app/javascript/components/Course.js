@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 
 // ランダムに配列をシャッフル
 const nativeShuffle = ([...array]) => {
@@ -16,9 +16,18 @@ var latestArray;
 
 //選択肢
 function Choice (props) {
+  if (props.answering === false && props.answer === props.choice) {
+    var buttonColor = "answer-choice";
+  } else if (props.latestChoice === props.choice) {
+    var buttonBorder = "choosed";
+  }
+
   return (
     <React.Fragment>
-      <button onClick={() => props.onClick(props.answer, props.choice)}>{props.choice}</button>
+      <button 
+       onClick={() => props.onClick(props.answer, props.choice)} 
+       className={"choose-button " + buttonColor + " " + buttonBorder}
+      >{props.choice}</button>
     </React.Fragment>
   );
 }
@@ -26,9 +35,9 @@ function Choice (props) {
 // 正誤結果表示
 function Correctness (props) {
   if (props.collectness) {
-    return (<div>正解!</div>);
+    return (<div className="correct"><span></span></div>);
   } else {
-    return (<div>不正解...</div>);
+    return (<div className="incorrect"><span></span></div>);
   }
 }
 
@@ -36,7 +45,10 @@ function Correctness (props) {
 function NextButton (props) {
   return (  
     <React.Fragment>
-      <button onClick={props.onClick}>次へ</button>
+      <a href="#"
+       onClick={props.onClick} 
+       className="link-button main-color"
+      >次へ</a>
     </React.Fragment>
   );
 }
@@ -45,8 +57,20 @@ function NextButton (props) {
 function Result (props) {
   return (
     <React.Fragment>
-      <div>終了</div>
-      <a href='/'>トップに戻る</a>
+      <div className="quiz-board__main--result">
+        <div className="result-text">
+          {props.history.length}問中{props.history.filter(word => word).length}問正解!
+        </div>
+        <div className="result-buttons">
+          <div onClick={() => location.reload()} className="link-button main-color result-buttons--inner">
+            再挑戦する
+          </div>
+          <a href='/' className="link-button gray result-buttons--inner">
+            トップに戻る
+          </a>
+        </div>
+        
+      </div>
     </React.Fragment>
   );
 }
@@ -56,13 +80,15 @@ class Question extends React.Component {
   // データを受け取り、4択を生成する
   renderChoice (choice) {
     return (
-      <div>
+      <React.Fragment>
         <Choice
         answer={this.props.question.answer}
         choice={choice}
+        latestChoice={this.props.latestChoice}
         onClick={(a, c) => this.props.onClick(a, c)}
+        answering={this.props.answering}
         />
-      </div>
+      </React.Fragment>
     );
   }
 
@@ -82,13 +108,15 @@ class Question extends React.Component {
     }
 
     return (
-      <div>
-        <div>Q.{this.props.number + 1} {this.props.question.sentence}</div>
-        <div>{this.renderChoice(choices[0])}</div>
-        <div>{this.renderChoice(choices[1])}</div>
-        <div>{this.renderChoice(choices[2])}</div>
-        <div>{this.renderChoice(choices[3])}</div>
-      </div>
+      <React.Fragment>
+        <div className="choices">
+        <div className="sentence">Q.{this.props.number + 1} {this.props.question.sentence}</div>
+        <div className="choice">{this.renderChoice(choices[0])}</div>
+        <div className="choice">{this.renderChoice(choices[1])}</div>
+        <div className="choice">{this.renderChoice(choices[2])}</div>
+        <div className="choice">{this.renderChoice(choices[3])}</div>
+        </div>
+      </React.Fragment>
     );
   };
 }
@@ -98,20 +126,15 @@ class Course extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // 問題情報
-      questions: nativeShuffle(this.props.questions),
-      // 何問目か
-      number: 0,
-      // 回答中?
-      answering: true,
-      // 最後の一問?
-      lastQuestion: false,
-      // 全問おわった?
-      allFinished: false,
-      // 直前の問題を正解したか
-      lastestResult: null,
-      // 回答履歴
-      history: [],
+      courseName: this.props.courseName,              // クイズ名
+      questions: nativeShuffle(this.props.questions), // 問題情報
+      number: 0,                                      // 何問目か
+      answering: true,                                // 回答中?
+      lastQuestion: false,                            // 最後の一問?
+      allFinished: false,                             // 全問おわった?
+      lastestResult: null,                            // 直前の問題を正解したか
+      latestChoice: null,                             // 直前の選択肢で何を選んだ?
+      history: [],                                    // 回答履歴
     };
   }
   
@@ -126,7 +149,8 @@ class Course extends React.Component {
       // 回答中をfalseにする
       this.setState({
         answering: false,
-        history: this.state.history.concat(answer === choice)
+        history: this.state.history.concat(answer === choice),
+        latestChoice: choice,
       });
     } else {
       return;
@@ -141,39 +165,31 @@ class Course extends React.Component {
     this.setState({
       answering: true,
       number: this.state.number + 1,
+      latestChoice: null,
     })
   }
   
   render() {
+    const courseName = this.state.courseName;
     const number = this.state.number;
     const question = this.state.questions[number];
     const answering = this.state.answering;
     const lastQuestion = this.state.lastQuestion;
     const lastestResult = this.state.lastestResult;
+    const latestChoice = this.state.latestChoice;
     const history = this.state.history;
-    
-    const answered = () => {
-      return (
-        <div>
-          <Correctness
-          collectness={lastestResult}
-          />
-          <div>{question.commentary}</div>
-          <NextButton 
-          onClick={() => this.clickNext()}
-          />
-        </div>
-      );
-    }
     
     const setQuestion = () => {
       return (
-        <Question
-        question={question}
-        number={number}
-        answering={answering}
-        onClick={(a, c) => this.clickChoice(a, c)}
-        />
+        <React.Fragment>
+          <Question
+          question={question}
+          number={number}
+          answering={answering}
+          latestChoice={latestChoice}
+          onClick={(a, c) => this.clickChoice(a, c)}
+          />
+        </React.Fragment>
       );
     }
 
@@ -181,37 +197,66 @@ class Course extends React.Component {
       var number = i + 1;
       var correctness = value ? "O" : "X";
       return(
-        <div key={number}>Q{number}. {correctness}</div>
+        <div key={number} className="history">Q{number}. {correctness}</div>
       );
     });
 
     const generatePage = (answering, question) => {
       if (this.state.lastQuestion) {
         return(
-          <Result />
+          <Result history={history} />
         );
       } else if (answering) {
-        return setQuestion(question);
-      } else {
         return (
-          <div>
-            {setQuestion(question)}
-            {answered(question)}
-          </div>
+          <div className="quiz-board__main--upper">{setQuestion(question)}</div>
+        );
+      } else {
+        if (lastestResult) {
+          var commentaryColor = "blue-commentary";
+        } else {
+          var commentaryColor = "red-commentary";
+        }
+        return (
+          <React.Fragment>
+            <div className="quiz-board__main--upper">
+              {setQuestion(question)}
+              <Correctness collectness={lastestResult} />
+            </div>
+            <div className="quiz-board__main--lower">
+              <div className={commentaryColor} >{question.commentary}</div>
+              <NextButton onClick={() => this.clickNext()} />
+            </div>
+          </React.Fragment>
         );
       }
     };
 
     return (
-      <div>
-        {generatePage(answering, question, lastQuestion)}
-        {setHistory}
-      </div>
+      <React.Fragment>
+        <div className="main">
+          <div className="main__content">
+            <div className="quiz-board">
+              <div className="quiz-board__header">
+                <div className="quiz-board__header--title">
+                  {courseName}
+                </div>
+              </div>
+              <div className="quiz-board__main">
+                {generatePage(answering, question, lastQuestion)}
+              </div>
+            </div>
+          </div>
+          <div className="main__sidebar">
+            <div className="history-list">{setHistory}</div>
+          </div>
+        </div>
+      </React.Fragment>
     );
   }
 }
 
 Course.propTypes = {
-  questions: PropTypes.array
+  questions: PropTypes.array,
+  courseName: PropTypes.string,
 }
 export default Course

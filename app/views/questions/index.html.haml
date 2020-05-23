@@ -1,2 +1,3 @@
-%h1 テスト中画面
-= react_component('Course', {questions: @questions})
+= render "shared/header"
+= react_component('Course', {questions: @questions, courseName: @course.name})
+= render "shared/footer"
