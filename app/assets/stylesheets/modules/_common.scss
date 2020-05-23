@@ -2,6 +2,35 @@ body {
   background-color: whitesmoke;
 }
 
+.header {
+  background-color: $mainColor;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5%;
+  line-height: 60px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+
+  &__left {
+    display: flex;
+    justify-content: flex-start;
+
+    &--title {
+      @include titleFont();
+      padding: 0 3%;
+    }
+  }
+
+  &__right {
+    display: flex;
+    justify-content: flex-end;
+
+    &--link {
+      margin: 0 15px;
+      font-weight: bold;
+    }
+  }
+}
+
 .main {
   display: flex;
   justify-content: flex-start;
@@ -18,12 +47,31 @@ body {
   }
 }
 
-// リンクの文字を白に
+.footer {
+  display: flex;
+  justify-content: space-between;
+  background-color: slategray;
+  padding: 0 5%;
+  line-height: 150px;
+
+  &__left {
+
+    &--title {
+      @include titleFont();
+      padding: 0 3%;
+    }
+  }
+  
+  &__right {}
+}
+
+// 白文字リンク
 .white-link {
   color: white;
-}
-.white-link:hover {
-  opacity: 0.6;
+
+  &:hover {
+    opacity: 0.6;
+  }
 }
 
 // ボタン型リンク
@@ -38,18 +86,16 @@ body {
   cursor: pointer;
 
   &:hover {
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
-    transform: translateY(-0.1875em);
+    @include hoverBox();
   }
 
   &:active {
-    transform: translateY(0.03em);
-    box-shadow: initial;
+    @include activeBox();
   }
 }
 
 .main-color {
-  background-color: #20b2aa;
+  background-color: $mainColor;
 }
 .gray {
   background-color: silver;

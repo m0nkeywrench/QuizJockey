@@ -17,7 +17,7 @@ var latestArray;
 //選択肢
 function Choice (props) {
   if (props.answering === false && props.answer === props.choice) {
-    var buttonColor = "answer-choice";
+    var buttonColor = "correct-answer";
   } else if (props.latestChoice === props.choice) {
     var buttonBorder = "choosed";
   }
