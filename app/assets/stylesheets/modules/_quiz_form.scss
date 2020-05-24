@@ -1,0 +1,39 @@
+.course-form {
+  padding: 20px 40px;
+
+  &__error {
+    padding: 10px 0;
+    color: red;
+  }
+  &__input {
+    padding: 10px 0 20px;
+
+    &--label {
+      padding: 0 0 10px;
+    }
+    &--form {
+      
+      input[type=text] {
+        @include hoverForm();
+        padding: 10px;
+        height: 20px;
+        width: 690px;
+      }
+
+      textarea {
+        @include hoverForm();
+        padding: 10px;
+        height: 100px;
+        width: 690px;
+      }
+
+      input[type=checkbox] {
+        @include hoverForm();
+        margin: 0 0 3px;
+        &:focus {
+          outline: auto;
+        }
+      }
+    }
+  }
+}

@@ -11,7 +11,7 @@
             作成クイズ一覧
         = link_to new_course_path, class: "gray-link" do
           .mypage__left--list
-            クイズ新規作成
+            クイズ作成
         = link_to "#", class: "gray-link" do
           .mypage__left--list
             ユーザー情報編集
@@ -31,7 +31,7 @@
               .admin-list__edit.bold-font
             - else
               .admin-list__tutorial
-                「クイズ新規作成」をクリックしてクイズを作ろう!
+                「クイズ作成」をクリックしてクイズを作ろう!
           - @courses.each do |course|
             .admin-list
               .admin-list__name

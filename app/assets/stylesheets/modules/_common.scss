@@ -107,6 +107,10 @@ body {
   &:active {
     @include activeBox();
   }
+  
+  &:focus {
+    outline: 0;
+  }
 }
 
 .main-color {
@@ -114,4 +118,9 @@ body {
 }
 .gray {
   background-color: silver;
+}
+
+// 中央に配置する
+.put-center {
+  margin: 0 auto;
 }

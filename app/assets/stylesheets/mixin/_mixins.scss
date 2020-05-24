@@ -12,6 +12,19 @@
   transition: all 0.25s ease 0s;
 }
 
+// フォームを浮かす
+@mixin hoverForm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+  transform: translateY(-0.05em);
+  border: $silverBorder;
+  border-radius: 3px;
+  font-size: 13px;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
 // タイトル文字
 @mixin titleFont {
   font-size: 2rem;

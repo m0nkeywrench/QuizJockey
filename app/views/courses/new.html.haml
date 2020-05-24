@@ -1,16 +1,52 @@
-%h1 コース作成
-= form_with model: @course, local: true do |f|
+= render "shared/header"
 
-  - if @course.errors.any?
-    = "#{@course.errors.count}件のエラーが発生しました"
+.main
+  .main__content
+    .mypage
+      .mypage__left
+        .mypage__left--list
+          ▼ メニュー
+        = link_to user_path(current_user.id), class: "gray-link" do
+          .mypage__left--list
+            作成クイズ一覧
+        = link_to new_course_path, class: "gray-link" do
+          .mypage__left--list.current-list
+            クイズ作成
+        = link_to "#", class: "gray-link" do
+          .mypage__left--list
+            ユーザー情報編集
 
-  = f.label :name
-  = f.text_field :name
+      .mypage__right
+        .mypage__right--title
+          クイズ作成
+        .mypage__right--main
+          .course-form
+            = form_with model: @course, local: true do |f|
 
-  = f.label :description
-  = f.text_area :description
+              .course-form__error
+                - if @course.errors.any?
+                  = "クイズの名前を入れてください"
 
-  = f.label :private
-  = f.check_box :private,{}, "true", "false"
+              .course-form__input
+                .course-form__input--label
+                  = f.label :name, "クイズの名前"
+                .course-form__input--form
+                  = f.text_field :name
+                
+              .course-form__input
+                .course-form__input--label
+                  = f.label :description, "クイズの紹介文"
+                .course-form__input--form
+                  = f.text_area :description
 
-  = f.submit
+              .course-form__input
+                .course-form__input--form
+                  = f.check_box :private,{}, "true", "false"
+                  = f.label :private, "非公開にする"
+
+              .course-form__input
+                = f.submit "決定", class: "link-button main-color put-center"
+
+  .main__sidebar
+
+= render "shared/footer"
