@@ -71,6 +71,21 @@ body {
 
   &:hover {
     opacity: 0.6;
+    transition: all 0.3s ease 0s;
+  }
+}
+
+// 灰色リンク
+.gray-link {
+  color: #474a4d;
+}
+
+.blue-link {
+  color: blue;
+
+  &:hover {
+    opacity: 0.6;
+    transition: all 0.3s ease 0s;
   }
 }
 

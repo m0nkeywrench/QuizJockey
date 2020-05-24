@@ -24,15 +24,14 @@
     width: 18%;
     text-align: center;
 
-    &--icon {
-      background-color: red;
+    &--upper {
       height: 60px;
-      width: 60px;
+      line-height: 60px;
       margin: 20px auto 20px;
-      border-radius: 50px;
+      color: black;
     }
 
-    &--name  {
+    &--lower {
       font-size: 0.8rem;
       color: gray;
     }

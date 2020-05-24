@@ -1,0 +1,84 @@
+.mypage {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  min-height: 580px;
+
+  &__left {
+    width: 15%;
+    padding: 40px 0 0 5%;
+
+    &--list {
+      font-size: 0.8rem;
+      padding: 10px;
+      margin: 7px 0;
+      
+      &:hover {
+        opacity: 0.6;
+        transition: all 0.3s ease 0s;
+      }
+    }
+
+    .current-list {
+      background-color: $mainColor;
+      border-radius: 10px 0 0 10px;
+    }
+  }
+
+  &__right {
+    width: 70%;
+    margin: 0 10% 0 0;
+    padding: 40px 0 0;
+
+    &--title {
+      @include bigFont();
+      text-align: center;
+      background-color: white;
+      border-bottom: 1px solid whitesmoke;
+      padding: 30px 0;
+    }
+
+    &--main {
+      background-color: white;
+
+      .admin-list {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+        padding: 18px 0;
+        border-bottom: 1px solid whitesmoke;
+
+        &__name {
+          width: 52%;
+          padding: 0 0 0 3%;
+        }
+
+        &__numOfQuestions {
+          width: 15%;
+          text-align: center;
+        }
+
+        &__private {
+          width: 15%;
+          text-align: center;
+        }
+
+        &__edit {
+          width: 15%;
+          text-align: center;
+        }
+
+        &__tutorial {
+          width: 100%;
+          padding: 30px 0;
+          font-weight: bold;
+          text-align: center;
+        }
+
+        .bold-font {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

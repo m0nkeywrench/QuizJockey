@@ -10,9 +10,9 @@
           = link_to course_path(course.id) do
             .course
               .course__left
-                .course__left--icon
-                  = #アイコンを出す
-                .course__left--name
+                .course__left--upper
+                  = "全#{course.questions.length}問"
+                .course__left--lower
                   = "by @#{course.user.name}" #ユーザーネーム
               .course__right
                 .course__right--name
