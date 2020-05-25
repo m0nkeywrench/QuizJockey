@@ -1,0 +1,38 @@
+.question-form
+  = form_with model: [@course, @question], local: true do |f|
+
+    .question-form__alert
+      - if @question.errors.any?
+        = "#{@question.errors.count}件のエラーが発生しました"
+
+    .question-form__input
+      .question-form__input--label
+        = f.label :sentence, "問題文"
+      .question-form__input--form
+        = f.text_area :sentence
+
+    .question-form__input
+      .question-form__input--label
+        = f.label :answer, "答え"
+      .question-form__input--form
+        = f.text_field :answer
+
+    .question-form__input
+      .question-form__input--label
+        = f.label :wrong1, "誤答(3つ)"
+      .flex-start
+        .question-form__input--form
+          = f.text_field :wrong1
+        .question-form__input--form
+          = f.text_field :wrong2
+        .question-form__input--form
+          = f.text_field :wrong3
+
+    .question-form__input
+      .question-form__input--label
+        = f.label :commentary, "問題の解説"
+      .question-form__input--form
+        = f.text_area :commentary
+
+    .course-form__input
+      = f.submit "決定", class: "link-button main-color put-center"

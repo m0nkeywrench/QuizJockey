@@ -1,6 +1,6 @@
 class CoursesController < ApplicationController
   
-  before_action :set_course, onlt: [:show, :edit, :update]
+  before_action :set_course, only: [:show, :edit, :update]
   
   def index
     @courses = Course.includes(:questions, :user)
@@ -29,7 +29,6 @@ class CoursesController < ApplicationController
     if @course.update(course_params)
       redirect_to new_course_question_path(@course.id)
     else
-      flash.now[:error] = '更新失敗'
       render action: :edit
     end
   end

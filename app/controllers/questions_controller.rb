@@ -19,6 +19,19 @@ class QuestionsController < ApplicationController
       render action: :new
     end
   end
+
+  def update
+    @course = Course.find(params[:course_id])
+    @question = Question.find(params[:id])
+    if @question.update(question_params)
+      redirect_to action: :new
+    else
+      render action: :edit
+    end
+  end
+
+  def destroy
+  end
   
   private
   def question_params

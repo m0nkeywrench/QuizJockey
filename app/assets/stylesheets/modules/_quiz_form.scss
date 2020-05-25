@@ -78,49 +78,48 @@
 
     &--body {
       padding: 10px 40px 0;
-
-      .question-form {
-
-        &__alert {
-          padding: 10px 0;
-          color: red;
-        }
-
-        &__input {
-          padding: 0 0 10px;
-
-          &--label {
-            padding: 0 0 5px;
-          }
-
-          &--form {
-
-            input[type=text] {
-              @include hoverForm();
-              padding: 10px;
-              height: 20px;
-              width: 200px;
-              margin: 5px 5px 5px 0;
-            }
-
-            textarea {
-              @include hoverForm();
-              padding: 10px;
-              height: 50px;
-              width: 660px;
-              margin: 5px 0;
-            }
-          }
-
-          .flex-start {
-            display: flex;
-            justify-content: flex-start;
-          }
-        }
-      }
     }
   }
+}
 
+.question-form {
+
+  &__alert {
+    padding: 10px 0;
+    color: red;
+  }
+
+  &__input {
+    padding: 0 0 10px;
+
+    &--label {
+      padding: 0 0 5px;
+    }
+
+    &--form {
+
+      input[type=text] {
+        @include hoverForm();
+        padding: 7px;
+        height: 20px;
+        width: 209px;
+        margin: 5px 5px 5px 0;
+      }
+
+      textarea {
+        @include hoverForm();
+        padding: 7px;
+        height: 50px;
+        width: 670px;
+        margin: 5px 0;
+      }
+    }
+
+    .flex-start {
+      display: flex;
+      justify-content: flex-start;
+    }
+  }
 }
 
 .question-list {
