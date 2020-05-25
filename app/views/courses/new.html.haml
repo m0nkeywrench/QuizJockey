@@ -23,7 +23,7 @@
           .course-form
             = form_with model: @course, local: true do |f|
 
-              .course-form__error
+              .course-form__alert
                 - if @course.errors.any?
                   = "クイズの名前を入れてください"
 
@@ -43,9 +43,11 @@
                 .course-form__input--form
                   = f.check_box :private,{}, "true", "false"
                   = f.label :private, "非公開にする"
+                  .course-form__alert
+                    ※非公開をONにすると、URLを知っている人のみクイズを解くことができます。
 
               .course-form__input
-                = f.submit "決定", class: "link-button main-color put-center"
+                = f.submit "次へ", class: "link-button main-color put-center"
 
   .main__sidebar
 

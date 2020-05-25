@@ -1,36 +1,103 @@
-%h1 問題作成
-%h3 コース情報
-= @course.name
-= @course.description
-%h3 問題情報
-- if @course.questions.present?
-  - @course.questions.each do |q|
-    = q.sentence
-    = q.answer
-    = "#{q.wrong1},#{q.wrong2},#{q.wrong3}"
-    %br/
+= render "shared/header"
 
-= form_with model: [@course, @question], local: true do |f|
+.main
+  .main__content
+    .mypage
+      .mypage__left
+        .mypage__left--list
+          ▼ メニュー
+        = link_to user_path(current_user.id), class: "gray-link" do
+          .mypage__left--list
+            作成クイズ一覧
+        = link_to new_course_path, class: "gray-link" do
+          .mypage__left--list
+            クイズ作成
+        = link_to "#", class: "gray-link" do
+          .mypage__left--list
+            ユーザー情報編集
 
-  - if @question.errors.any?
-    = "#{@question.errors.count}件のエラーが発生しました"
+      .mypage__right
+        .mypage__right--title
+          クイズ詳細
+        .mypage__right--main
+          .add-question
+            .add-question__header
+              .course-info
+                .course-info__left
+                  .course-info__left--inner
+                    = @course.name
+                  .course-info__left--inner
+                    = simple_format(@course.description)
+                .course-info__right
+                  = link_to "編集", "#", class: "blue-link"
 
-  = f.label :sentence
-  = f.text_area :sentence
+            .add-question__main
+              .add-question__main--title
+                4択の作成
+              .add-question__main--body
+                .question-form
+                  = form_with model: [@course, @question], local: true do |f|
 
-  = f.label :answer
-  = f.text_field :answer
+                    .question-form__alert
+                      - if @question.errors.any?
+                        = "#{@question.errors.count}件のエラーが発生しました"
 
-  = f.label :wrong1
-  = f.text_field :wrong1
+                    .question-form__input
+                      .question-form__input--label
+                        = f.label :sentence, "問題文"
+                      .question-form__input--form
+                        = f.text_area :sentence
 
-  = f.label :wrong2
-  = f.text_field :wrong2
+                    .question-form__input
+                      .question-form__input--label
+                        = f.label :answer, "答え"
+                      .question-form__input--form
+                        = f.text_field :answer
 
-  = f.label :wrong3
-  = f.text_field :wrong3
+                    .question-form__input
+                      .question-form__input--label
+                        = f.label :wrong1, "誤答(3つ)"
+                      .flex-start
+                        .question-form__input--form
+                          = f.text_field :wrong1
+                        .question-form__input--form
+                          = f.text_field :wrong2
+                        .question-form__input--form
+                          = f.text_field :wrong3
 
-  = f.label :commentary
-  = f.text_area :commentary
+                    .question-form__input
+                      .question-form__input--label
+                        = f.label :commentary, "問題の解説"
+                      .question-form__input--form
+                        = f.text_area :commentary
 
-  = f.submit
+                    .course-form__input
+                      = f.submit "追加", class: "link-button main-color put-center"
+
+            .question-list
+              .question-list__header
+                4択一覧
+              .question-list__main
+                - if @course.questions.present?
+                  - @course.questions.order('updated_at DESC').each do |q|
+                    .question-info
+                      .question-info__left
+                        .question-info__left--inner
+                          = "問題文: #{q.sentence}"
+                        .question-info__left--inner
+                          = "答え: #{q.answer}"
+                        .question-info__left--inner
+                          = "誤答: #{q.wrong1},#{q.wrong2},#{q.wrong3}"
+                        .question-info__left--inner
+                          =# 解説文を開く
+                      .question-info__right
+                        = link_to "編集", course_path(@course.id), method: :put, class: "blue-link"
+                - else
+                  .question-list__main--none
+                    作った4択はここに表示されます。
+
+
+
+  .main__sidebar
+
+= render "shared/footer"

@@ -1,7 +1,7 @@
 .course-form {
   padding: 20px 40px;
 
-  &__error {
+  &__alert {
     padding: 10px 0;
     color: red;
   }
@@ -11,22 +11,23 @@
     &--label {
       padding: 0 0 10px;
     }
+
     &--form {
-      
+
       input[type=text] {
         @include hoverForm();
         padding: 10px;
         height: 20px;
         width: 690px;
       }
-
+    
       textarea {
         @include hoverForm();
         padding: 10px;
         height: 100px;
         width: 690px;
       }
-
+    
       input[type=checkbox] {
         @include hoverForm();
         margin: 0 0 3px;
@@ -34,6 +35,128 @@
           outline: auto;
         }
       }
+    }
+  }
+}
+
+.add-question {
+  padding: 0 0 40px;
+
+  &__header {
+    
+    .course-info {
+      display: flex;
+      justify-content: space-between;
+      margin: 0 60px;
+      border-bottom: $silverBorder;
+      padding: 20px 0 10px;
+
+      &__left {
+
+        &--inner {
+          padding: 0 0 10px;
+          font-weight: bold;
+          max-width: 500px;
+          word-wrap: break-word;
+        }
+      }
+
+      &__right {}
+    }
+  }
+
+  &__main {
+    padding: 20px 20px 5px;
+
+    &--title {
+      text-align: center;
+      @include bigFont();
+      padding: 0 0 20px;
+      margin: 0 40px;
+      border-bottom: $silverBorder;
+    }
+
+    &--body {
+      padding: 10px 40px 0;
+
+      .question-form {
+
+        &__alert {
+          padding: 10px 0;
+          color: red;
+        }
+
+        &__input {
+          padding: 0 0 10px;
+
+          &--label {
+            padding: 0 0 5px;
+          }
+
+          &--form {
+
+            input[type=text] {
+              @include hoverForm();
+              padding: 10px;
+              height: 20px;
+              width: 200px;
+              margin: 5px 5px 5px 0;
+            }
+
+            textarea {
+              @include hoverForm();
+              padding: 10px;
+              height: 50px;
+              width: 660px;
+              margin: 5px 0;
+            }
+          }
+
+          .flex-start {
+            display: flex;
+            justify-content: flex-start;
+          }
+        }
+      }
+    }
+  }
+
+}
+
+.question-list {
+  margin: 0 60px;
+
+  &__header {
+    @include bigFont();
+    text-align: center;
+    border-top: $silverBorder;
+    border-bottom: $silverBorder;
+    padding: 15px 0;
+  }
+
+  &__main {
+
+    .question-info {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 10px 7px;
+      border-bottom: $silverBorder;
+
+      &__left {
+        font-size: 0.9rem;
+
+        &--inner {
+          padding: 3px 0;
+          max-width: 500px;
+          word-wrap: break-word;
+        }
+      }
+      &__right {}
+    }
+
+    &--none {
+      text-align: center;
+      padding: 10px 10px;
     }
   }
 }
