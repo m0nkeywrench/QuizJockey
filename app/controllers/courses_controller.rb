@@ -1,5 +1,7 @@
 class CoursesController < ApplicationController
   
+  before_action :set_course, onlt: [:show, :edit, :update]
+  
   def index
     @courses = Course.includes(:questions, :user)
   end
@@ -9,7 +11,6 @@ class CoursesController < ApplicationController
   end
 
   def show
-    @course = Course.find(params[:id])
   end
 
   def create
@@ -21,8 +22,27 @@ class CoursesController < ApplicationController
     end
   end
 
+  def edit
+  end
+
+  def update
+    if @course.update(course_params)
+      redirect_to new_course_question_path(@course.id)
+    else
+      flash.now[:error] = '更新失敗'
+      render action: :edit
+    end
+  end
+  
+  def destroy
+  end
+
   private
   def course_params
     params.require(:course).permit(:name, :description, :private).merge(user_id: current_user.id)
+  end
+
+  def set_course
+    @course = Course.find(params[:id])
   end
 end

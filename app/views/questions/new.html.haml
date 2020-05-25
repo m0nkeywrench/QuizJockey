@@ -29,7 +29,7 @@
                   .course-info__left--inner
                     = simple_format(@course.description)
                 .course-info__right
-                  = link_to "編集", "#", class: "blue-link"
+                  = link_to "編集", edit_course_path(@course.id), class: "blue-link"
 
             .add-question__main
               .add-question__main--title
@@ -91,7 +91,7 @@
                         .question-info__left--inner
                           =# 解説文を開く
                       .question-info__right
-                        = link_to "編集", course_path(@course.id), method: :put, class: "blue-link"
+                        = link_to "編集", "#", class: "blue-link"
                 - else
                   .question-list__main--none
                     作った4択はここに表示されます。
