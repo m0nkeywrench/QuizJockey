@@ -4,17 +4,7 @@
   .main__content
     .mypage
       .mypage__left
-        .mypage__left--list
-          ▼ メニュー
-        = link_to user_path(current_user.id), class: "gray-link" do
-          .mypage__left--list.current-list
-            作成クイズ一覧
-        = link_to new_course_path, class: "gray-link" do
-          .mypage__left--list
-            クイズ作成
-        = link_to "#", class: "gray-link" do
-          .mypage__left--list
-            ユーザー情報編集
+        = render "shared/mypage_menu"
 
       .mypage__right
         .mypage__right--title
