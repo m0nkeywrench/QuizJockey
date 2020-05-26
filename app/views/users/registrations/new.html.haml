@@ -1,35 +1,52 @@
-%h2 Sign up
-= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-  = render "devise/shared/error_messages", resource: resource
-  .field
-    = f.label :name
-    %br/
-    = f.text_field :name, autofocus: true, autocomplete: "name"
+= render "shared/header"
 
-  .field
-    = f.label :nickname
-    %br/
-    = f.text_field :nickname, autocomplete: "nickname"
+.single-main
+  .single-main__content
+    .user
+      .user__header
+        アカウント作成
+      .user__main
+        .user-form
+          = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+            = render "devise/shared/error_messages", resource: resource
 
-  .field
-    = f.label :email
-    %br/
-    = f.email_field :email,autocomplete: "email"
+            .user-form__input
+              .user-form__input--label
+                = f.label :name, "ユーザー名 (英数字のみ)"
+              .user-form__input--form
+                = f.text_field :name, autofocus: true, autocomplete: "name"
 
-  .field
-    = f.label :password
-    - if @minimum_password_length
-      %em
-        (#{@minimum_password_length} characters minimum)
-    %br/
-    = f.password_field :password, autocomplete: "new-password"
+            .user-form__input
+              .user-form__input--label
+                = f.label :nickname, "ニックネーム"
+              .user-form__input--form
+                = f.text_field :nickname, autocomplete: "nickname"
 
-  .field
-    = f.label :password_confirmation
-    %br/
-    = f.password_field :password_confirmation, autocomplete: "new-password"
+            .user-form__input
+              .user-form__input--label
+                = f.label :email, "メールアドレス"
+              .user-form__input--form
+                = f.email_field :email,autocomplete: "email"
 
-  .actions
-    = f.submit "Sign up"
+            .user-form__input
+              .user-form__input--label
+                = f.label :password, "パスワード"
+                - if @minimum_password_length
+                  %em
+                  (#{@minimum_password_length}文字以上の英数字)
+              .user-form__input--form
+                = f.password_field :password, autocomplete: "new-password"
 
-= render "users/shared/links"
+              .user-form__input--label
+                = f.label :password_confirmation, "パスワード確認"
+              .user-form__input--form
+                = f.password_field :password_confirmation, autocomplete: "new-password"
+
+
+            .user-form__input
+              = f.submit "Sign up", class: "link-button main-color put-center"
+
+            .user-form__link
+              = link_to "持っているアカウントでログイン", new_user_session_path, class: "blue-link"
+
+= render "shared/footer"

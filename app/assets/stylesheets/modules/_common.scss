@@ -47,6 +47,12 @@ body {
   }
 }
 
+.single-main {
+  width: 100vw;
+
+  &__content {}
+}
+
 .footer {
   display: flex;
   justify-content: space-between;
