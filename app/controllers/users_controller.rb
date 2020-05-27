@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :move_to_login, only: [:show, :profile_edit, :profile_update]
 
   def show
     @courses = current_user.courses.includes(:questions)
@@ -20,5 +21,9 @@ class UsersController < ApplicationController
   private
   def user_params
     params.require(:user).permit(:name, :nickname)
+  end
+
+  def move_to_login
+    redirect_to new_user_session_path unless user_signed_in?
   end
 end

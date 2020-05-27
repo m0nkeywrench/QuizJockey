@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  before_action :move_to_login, except: :index
 
   def index
     @course = Course.find(params[:course_id])
@@ -44,5 +45,9 @@ class QuestionsController < ApplicationController
   private
   def question_params
     params.require(:question).permit(:sentence, :answer, :wrong1, :wrong2, :wrong3, :commentary).merge(course_id: params[:course_id])
+  end
+  
+  def move_to_login
+    redirect_to new_user_session_path unless user_signed_in?
   end
 end

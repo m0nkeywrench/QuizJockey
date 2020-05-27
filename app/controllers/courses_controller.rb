@@ -1,9 +1,9 @@
 class CoursesController < ApplicationController
-  
+  before_action :move_to_login, except: [:index, :show]
   before_action :set_course, only: [:show, :edit, :update]
   
   def index
-    @courses = Course.includes(:questions, :user)
+    @courses = Course.get_course_list
   end
 
   def new
@@ -41,6 +41,10 @@ class CoursesController < ApplicationController
   private
   def course_params
     params.require(:course).permit(:name, :description, :private).merge(user_id: current_user.id)
+  end
+
+  def move_to_login
+    redirect_to new_user_session_path unless user_signed_in?
   end
 
   def set_course
