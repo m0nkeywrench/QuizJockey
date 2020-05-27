@@ -202,7 +202,7 @@ class Course extends React.Component {
     });
 
     const setCommentary = (commentaryColor) => {
-      if (!question.commentary) {
+      if (question.commentary) {
         return (
           <div className={commentaryColor} >{question.commentary}</div>
         );
