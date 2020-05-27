@@ -1,19 +1,18 @@
 class QuestionsController < ApplicationController
   before_action :move_to_login, except: :index
+  before_action :set_course, only: [:index, :new, :create, :edit, :update]
+  before_action :set_question, only: [:update, :destroy]
 
   def index
-    @course = Course.find(params[:course_id])
     @questions = @course.questions
   end
 
   def new
-    @course = Course.find(params[:course_id])
     @question = Question.new
   end
 
   def create
     @question = Question.new(question_params)
-    @course = Course.find(params[:course_id])
     if @question.save
       redirect_to action: :new
     else
@@ -21,13 +20,7 @@ class QuestionsController < ApplicationController
     end
   end
 
-  def edit
-    @course = Course.find(params[:course_id])
-    @question = Question.find(params[:id])
-  end
-
   def update
-    @course = Course.find(params[:course_id])
     @question = Question.find(params[:id])
     if @question.update(question_params)
       redirect_to action: :new
@@ -37,7 +30,6 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    question = Question.find(params[:id])
     question.destroy
     redirect_to new_course_question_path(course_id: params[:course_id])
   end
@@ -49,5 +41,13 @@ class QuestionsController < ApplicationController
   
   def move_to_login
     redirect_to new_user_session_path unless user_signed_in?
+  end
+
+  def set_course
+    @course = Course.find(params[:course_id])
+  end
+
+  def set_question
+    question = Question.find(params[:id])
   end
 end
