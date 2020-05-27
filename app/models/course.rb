@@ -3,5 +3,5 @@ class Course < ApplicationRecord
   validates  :private, inclusion: {in: [true, false]}
 
   belongs_to :user
-  has_many   :questions
+  has_many   :questions, dependent: :delete_all
 end

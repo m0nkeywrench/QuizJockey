@@ -34,6 +34,8 @@ class CoursesController < ApplicationController
   end
   
   def destroy
+    Course.find(params[:id]).destroy
+    redirect_to user_path(current_user.id)
   end
 
   private

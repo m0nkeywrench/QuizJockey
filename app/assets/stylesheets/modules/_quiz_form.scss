@@ -61,7 +61,12 @@
         }
       }
 
-      &__right {}
+      &__right {
+
+        &--inner {
+          padding: 5px 0;
+        }
+      }
     }
   }
 
@@ -150,7 +155,12 @@
           word-wrap: break-word;
         }
       }
-      &__right {}
+      &__right {
+
+        &--inner {
+          padding: 5px 0;
+        }
+      }
     }
 
     &--none {

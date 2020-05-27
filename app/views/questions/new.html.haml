@@ -17,9 +17,15 @@
                   .course-info__left--inner
                     ▼紹介
                   .course-info__left--inner
-                    = simple_format(@course.description)
+                    - if @course.description.present?
+                      = simple_format(@course.description)
+                    - else
+                      未記入
                 .course-info__right
-                  = link_to "編集", edit_course_path(@course.id), class: "blue-link"
+                  .course-info__right--inner
+                    = link_to "編集", edit_course_path(@course.id), class: "blue-link"
+                  .course-info__right--inner
+                    = link_to "削除", course_path(@course.id), method: :delete, class: "blue-link"
 
             .add-question__main
               .add-question__main--title
@@ -41,15 +47,14 @@
                           = "答え: #{q.answer}"
                         .question-info__left--inner
                           = "誤答: #{q.wrong1},#{q.wrong2},#{q.wrong3}"
-                        .question-info__left--inner
-                          =# 解説文を開く
                       .question-info__right
-                        = link_to "編集", "#", class: "blue-link"
+                        .question-info__right--inner 
+                          = link_to "編集", "#", class: "blue-link"
+                        .question-info__right--inner 
+                          = link_to "削除", course_question_path(course_id: @course.id, id: q.id), method: :delete, data: { confirm: "削除しますか？" }, class: "blue-link"
                 - else
                   .question-list__main--none
                     作った4択はここに表示されます。
-
-
 
   .main__sidebar
 

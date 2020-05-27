@@ -20,6 +20,11 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def edit
+    @course = Course.find(params[:course_id])
+    @question = Question.find(params[:id])
+  end
+
   def update
     @course = Course.find(params[:course_id])
     @question = Question.find(params[:id])
@@ -31,6 +36,9 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
+    question = Question.find(params[:id])
+    question.destroy
+    redirect_to new_course_question_path(course_id: params[:course_id])
   end
   
   private
