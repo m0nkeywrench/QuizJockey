@@ -20,7 +20,15 @@
 = link_to edit_user_registration_path, class: "gray-link" do
   - if controller.controller_name == "registrations" && controller.action_name == "edit"
     .mypage__left--list.current-list
-      ユーザー情報編集
+      アカウント情報編集
   - else 
     .mypage__left--list
-      ユーザー情報編集
+      アカウント情報編集
+
+= link_to edit_user_registration_path, class: "gray-link" do
+  - if controller.controller_name == "registrations" && controller.action_name == "edit"
+    .mypage__left--list.current-list
+      パスワード変更
+  - else 
+    .mypage__left--list
+      パスワード変更
