@@ -17,8 +17,8 @@
     .mypage__left--list
       クイズ作成
 
-= link_to edit_user_registration_path, class: "gray-link" do
-  - if controller.controller_name == "registrations" && controller.action_name == "edit"
+= link_to profile_edit_user_path(id: current_user.id), class: "gray-link" do
+  - if controller.controller_name == "users" && controller.action_name == "profile_edit"
     .mypage__left--list.current-list
       アカウント情報編集
   - else 

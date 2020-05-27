@@ -1,0 +1,34 @@
+= render "shared/header"
+
+.main
+  .main__content
+    .mypage
+      .mypage__left
+        = render "shared/mypage_menu"
+
+      .mypage__right
+        .mypage__right--title
+          アカウント情報編集
+        .mypage__right--main
+          .user-form.edit-user
+            = form_for(@user, url: profile_update_user_path(id: current_user.id)) do |f|
+              =# render "devise/shared/error_messages", resource: resource
+
+              .user-form__input
+                .user-form__input--label
+                  = f.label :name, "ユーザー名 (英数字のみ)"
+                .user-form__input--form
+                  = f.text_field :name, autofocus: true, autocomplete: "name"
+                  
+              .user-form__input
+                .user-form__input--label
+                  = f.label :nickname, "ニックネーム"
+                .user-form__input--form
+                  = f.text_field :nickname, autocomplete: "nickname"
+
+              .user-form__input
+                = f.submit "変更", class: "link-button main-color put-center"
+
+  .main__sidebar
+
+= render "shared/footer"
