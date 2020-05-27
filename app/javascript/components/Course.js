@@ -201,6 +201,16 @@ class Course extends React.Component {
       );
     });
 
+    const setCommentary = (commentaryColor) => {
+      if (!question.commentary) {
+        return (
+          <div className={commentaryColor} >{question.commentary}</div>
+        );
+      } else {
+        return (<div></div>);
+      }
+    }
+
     const generatePage = (answering, question) => {
       if (this.state.lastQuestion) {
         return(
@@ -223,7 +233,7 @@ class Course extends React.Component {
               <Correctness collectness={lastestResult} />
             </div>
             <div className="quiz-board__main--lower">
-              <div className={commentaryColor} >{question.commentary}</div>
+              {setCommentary(commentaryColor)}
               <NextButton onClick={() => this.clickNext()} />
             </div>
           </React.Fragment>
