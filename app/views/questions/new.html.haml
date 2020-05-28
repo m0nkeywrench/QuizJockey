@@ -25,7 +25,7 @@
                   .course-info__right--inner
                     = link_to "編集", edit_course_path(@course.id), class: "blue-link"
                   .course-info__right--inner
-                    = link_to "削除", course_path(@course.id), method: :delete, class: "blue-link"
+                    = link_to "削除", course_path(@course.id), method: :delete, data: { confirm: "復元することはできません。本当に削除しますか？" }, class: "blue-link"
 
             .add-question__main
               .add-question__main--title
@@ -51,7 +51,7 @@
                         .question-info__right--inner 
                           = link_to "編集", edit_course_question_path(course_id: @course.id, id: q.id), class: "blue-link"
                         .question-info__right--inner 
-                          = link_to "削除", course_question_path(course_id: @course.id, id: q.id), method: :delete, data: { confirm: "削除しますか？" }, class: "blue-link"
+                          = link_to "削除", course_question_path(course_id: @course.id, id: q.id), method: :delete, data: { confirm: "復元することはできません。本当に削除しますか？" }, class: "blue-link"
                 - else
                   .question-list__main--none
                     作った4択はここに表示されます。
