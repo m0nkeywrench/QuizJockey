@@ -1,7 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :move_to_login, except: :index
   before_action :set_course, only: [:index, :new, :create, :edit, :update]
-  before_action :set_question, only: [:update, :destroy]
 
   def index
     @questions = @course.questions
@@ -30,7 +29,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    question.destroy
+    question = Question.find(params[:id]).destroy
     redirect_to new_course_question_path(course_id: params[:course_id])
   end
   
@@ -45,9 +44,5 @@ class QuestionsController < ApplicationController
 
   def set_course
     @course = Course.find(params[:course_id])
-  end
-
-  def set_question
-    question = Question.find(params[:id])
   end
 end

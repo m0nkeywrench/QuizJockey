@@ -3,7 +3,7 @@ class CoursesController < ApplicationController
   before_action :set_course, only: [:show, :edit, :update]
   
   def index
-    @courses = Course.get_course_list
+    @courses = Course.get_course_list.page(params[:page]).per(8).order(created_at: :desc)
   end
 
   def new

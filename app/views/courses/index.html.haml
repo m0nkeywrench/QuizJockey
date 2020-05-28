@@ -20,6 +20,9 @@
                 .course__right--desc
                   = course.description #コース概要
 
+      .courseList__footer
+        = paginate(@courses)
+
   .main__sidebar
 
 = render "shared/footer"
