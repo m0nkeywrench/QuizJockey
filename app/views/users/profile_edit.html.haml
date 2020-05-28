@@ -14,7 +14,7 @@
             = form_for(@user, url: profile_update_user_path(id: current_user.id)) do |f|
 
               .user-form__alert
-                = render "devise/shared/error_messages", resource: resource
+                = render "devise/shared/error_messages", resource: @user
 
               .user-form__input
                 .user-form__input--label
