@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :move_to_login, except: :index
-  before_action :set_course, only: [:index, :new, :create, :edit, :update]
+  before_action :set_course, only: [:index, :new, :create, :edit, :update, :destroy]
   before_action :move_to_course_detail, except: :index
 
   def index

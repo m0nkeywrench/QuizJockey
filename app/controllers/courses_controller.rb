@@ -1,7 +1,7 @@
 class CoursesController < ApplicationController
   before_action :move_to_login, except: [:index, :show]
-  before_action :set_course, only: [:show, :edit, :update]
-  before_action :move_to_course_detail, except: [:index, :show]
+  before_action :set_course, only: [:show, :edit, :update, :destroy]
+  before_action :move_to_course_detail, only: [:edit, :update, :destroy]
   
   def index
     @courses = Course.get_course_list.page(params[:page]).per(8).order(created_at: :desc)
@@ -53,6 +53,6 @@ class CoursesController < ApplicationController
   end
 
   def move_to_course_detail
-    redirect_to course_path(@course.id) unless @course.id == current_user.id
+    redirect_to course_path(@course.id) unless @course.user_id == current_user.id
   end
 end
