@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   }
   root to: "courses#index"
   resources :courses do
-    resources :questions, except: [:show, :edit]
+    resources :questions, except: [:show]
   end
   resources :users, only: [:show] do
     member do

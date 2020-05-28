@@ -74,6 +74,7 @@ body {
 // 白文字リンク
 .white-link {
   color: white;
+  cursor: pointer;
 
   &:hover {
     opacity: 0.6;
@@ -84,10 +85,12 @@ body {
 // 灰色リンク
 .gray-link {
   color: #474a4d;
+  cursor: pointer;
 }
 
 .blue-link {
   color: blue;
+  cursor: pointer;
 
   &:hover {
     opacity: 0.6;
