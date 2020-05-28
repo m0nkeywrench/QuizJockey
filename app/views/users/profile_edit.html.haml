@@ -12,7 +12,9 @@
         .mypage__right--main
           .user-form.edit-user
             = form_for(@user, url: profile_update_user_path(id: current_user.id)) do |f|
-              =# render "devise/shared/error_messages", resource: resource
+
+              .user-form__alert
+                = render "devise/shared/error_messages", resource: resource
 
               .user-form__input
                 .user-form__input--label

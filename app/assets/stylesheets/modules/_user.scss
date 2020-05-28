@@ -20,7 +20,10 @@
 
 .user-form {
 
-  &__alert {}
+  &__alert {
+    padding: 10px 0 20px;
+    color: red;
+  }
 
   &__input {
     padding: 0 0 10px;

@@ -8,7 +8,9 @@
       .user__main
         .user-form
           = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-            = render "devise/shared/error_messages", resource: resource
+            
+            .user-form__alert
+              = render "devise/shared/error_messages", resource: resource
 
             .user-form__input
               .user-form__input--label
@@ -44,7 +46,7 @@
 
 
             .user-form__input
-              = f.submit "Sign up", class: "link-button main-color put-center"
+              = f.submit "新規登録", class: "link-button main-color put-center"
 
             .user-form__link
               = link_to "持っているアカウントでログイン", new_user_session_path, class: "blue-link"

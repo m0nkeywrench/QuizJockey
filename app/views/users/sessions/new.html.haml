@@ -8,6 +8,11 @@
       .user__main
         .user-form
           = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+
+            - if flash.present?
+              .user-form__alert
+                = "メールアドレスかパスワードが間違っています"
+
             .user-form__input
               .user-form__input--label
                 = f.label :email, "メールアドレス"

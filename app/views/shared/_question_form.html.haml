@@ -3,30 +3,30 @@
 
     .question-form__alert
       - if @question.errors.any?
-        = "#{@question.errors.count}件のエラーが発生しました"
+        = "必要な情報が足りません"
 
     .question-form__input
       .question-form__input--label
         = f.label :sentence, "問題文"
       .question-form__input--form
-        = f.text_area :sentence
+        = f.text_area :sentence, placeholder: "必須"
 
     .question-form__input
       .question-form__input--label
         = f.label :answer, "答え"
       .question-form__input--form
-        = f.text_field :answer
+        = f.text_field :answer, placeholder: "必須"
 
     .question-form__input
       .question-form__input--label
         = f.label :wrong1, "誤答(3つ)"
       .flex-start
         .question-form__input--form
-          = f.text_field :wrong1
+          = f.text_field :wrong1, placeholder: "必須"
         .question-form__input--form
-          = f.text_field :wrong2
+          = f.text_field :wrong2, placeholder: "必須"
         .question-form__input--form
-          = f.text_field :wrong3
+          = f.text_field :wrong3, placeholder: "必須"
 
     .question-form__input
       .question-form__input--label
