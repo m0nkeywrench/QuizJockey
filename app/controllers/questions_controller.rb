@@ -1,6 +1,7 @@
 class QuestionsController < ApplicationController
   before_action :move_to_login, except: :index
   before_action :set_course, only: [:index, :new, :create, :edit, :update]
+  before_action :move_to_course_detail, except: :index
 
   def index
     @questions = @course.questions
@@ -49,5 +50,9 @@ class QuestionsController < ApplicationController
 
   def set_course
     @course = Course.find(params[:course_id])
+  end
+
+  def move_to_course_detail
+    redirect_to course_path(@course.id) unless @course.user_id == current_user.id
   end
 end
