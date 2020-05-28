@@ -14,6 +14,10 @@ body {
     display: flex;
     justify-content: flex-start;
 
+    &--logo {
+      padding: 5px 0;
+    }
+
     &--title {
       @include titleFont();
       padding: 0 3%;
