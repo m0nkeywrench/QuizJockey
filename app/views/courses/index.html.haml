@@ -2,10 +2,10 @@
 
 .main
   .main__content
-    .courseList
-      .courseList__header
+    .course-list
+      .course-list__header
         クイズ一覧
-      .courseList__main
+      .course-list__main
         - @courses.each do |course|
           = link_to course_path(course.id) do
             .course
@@ -20,7 +20,7 @@
                 .course__right--desc
                   = course.description #コース概要
 
-      .courseList__footer
+      .course-list__footer
         = paginate(@courses)
 
   .main__sidebar
