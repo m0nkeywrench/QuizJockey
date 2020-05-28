@@ -30,7 +30,7 @@
                 = "全#{course.questions.length}問"
               .admin-list__private
                 - if course.private
-                  = "非公開"
+                  = link_to "非公開", course_path(course.id), target: ["_blank"], class: "blue-link"
                 - else 
                   = "公開中"
               .admin-list__edit
