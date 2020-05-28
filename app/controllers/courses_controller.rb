@@ -4,7 +4,7 @@ class CoursesController < ApplicationController
   before_action :move_to_course_detail, only: [:edit, :update, :destroy]
   
   def index
-    @courses = Course.get_course_list.page(params[:page]).per(8).order(created_at: :desc)
+    @courses = Course.get_course_list.paginate(params[:page])
   end
 
   def new

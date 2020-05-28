@@ -1,0 +1,29 @@
+= render "shared/header"
+
+.main
+  .main__content
+    .course-list
+      .course-list__header
+        = "「#{@keyword}」の検索結果"
+      .course-list__main
+        - @courses.each do |course|
+          - if course.questions.present? # モデル側で問題数0のクイズをカットできなかったためここで処理する
+            = link_to course_path(course.id) do
+              .course
+                .course__left
+                  .course__left--upper
+                    = "全#{course.questions.length}問"
+                  .course__left--lower
+                    = "by @#{course.user.name}" #ユーザーネーム
+                .course__right
+                  .course__right--name
+                    = course.name #コース名
+                  .course__right--desc
+                    = course.description #コース概要
+
+      .course-list__footer
+        = paginate(@courses)
+
+  .main__sidebar
+
+= render "shared/footer"

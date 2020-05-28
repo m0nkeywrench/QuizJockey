@@ -3,6 +3,11 @@
     = image_tag "logo.png", height: 50, class: "header__left--logo"
     .header__left--title
       = link_to "QuizJockey", root_path, class: "white-link"
+    .header__left--search
+      = form_with url: courses_searches_path, method: :get, local: true, class: "search-form" do |f|
+        = f.text_field :keyword, placeholder: "クイズ名で検索", class: "search-form__input"
+        = f.submit "検索", class: "search-form__submit"
+
   .header__right
     - if user_signed_in?
       .header__right--link
