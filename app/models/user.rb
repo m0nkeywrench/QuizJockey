@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   validates :name, format: { with: /\A[a-z0-9]+\z/i }
   validates :password, presence: true, on: :create
+  validates :password, format: { with: /\A[a-z0-9]+\z/i }, on: :create
   validates :password, format: { with: /\A[a-z0-9]+\z/i }, on: :update, allow_blank: true
   validates :name, :nickname, presence: true
   validates :name, uniqueness: true
