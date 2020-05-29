@@ -45,7 +45,7 @@ function Correctness (props) {
 function NextButton (props) {
   return (  
     <React.Fragment>
-      <a href="#"
+      <a 
        onClick={props.onClick} 
        className="link-button main-color"
       >次へ</a>
