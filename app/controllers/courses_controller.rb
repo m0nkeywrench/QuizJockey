@@ -12,6 +12,10 @@ class CoursesController < ApplicationController
   end
 
   def show
+    # 問題数0のクイズへのリクエストはトップページへリダイレクトする
+    if @course.questions.blank?
+      redirect_to root_path
+    end
   end
 
   def create
