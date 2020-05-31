@@ -7,15 +7,15 @@ class CoursesController < ApplicationController
     @courses = Course.get_course_list.paginate(params[:page])
   end
 
-  def new
-    @course = Course.new
-  end
-
   def show
     # 問題数0のクイズへのリクエストはトップページへリダイレクトする
     if @course.questions.blank?
       redirect_to root_path
     end
+  end
+
+  def new
+    @course = Course.new
   end
 
   def create
