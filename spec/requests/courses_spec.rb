@@ -38,25 +38,31 @@ describe CoursesController, type: :request do
       expect(response.status).to eq 200
     end
 
-    it "questionありかつ、privateがfalseのcourseのname, description, user.nameが表示されていること" do
-      get courses_url
-      expect(response.body).to include(@course1.name)
-      expect(response.body).to include(@course1.description)
-      expect(response.body).to include(@course1.user.name)
+    context "questionありかつ、privateがfalseのcourseの場合" do
+      it "name, description, user.nameが表示されていること" do
+        get courses_url
+        expect(response.body).to include(@course1.name)
+        expect(response.body).to include(@course1.description)
+        expect(response.body).to include(@course1.user.name)
+      end
     end
 
-    it "privateがtrueのcourseのname, descriptionが表示されていないこと" do
-      get courses_url
-      expect(response.body).to_not include(@course2.name)
-      expect(response.body).to_not include(@course2.description)
-      expect(response.body).to_not include(@course2.user.name)
+    context "questionありかつ、privateがtrueのcourseの場合" do
+      it "name, description, user_nameが表示されていないこと" do
+        get courses_url
+        expect(response.body).to_not include(@course2.name)
+        expect(response.body).to_not include(@course2.description)
+        expect(response.body).to_not include(@course2.user.name)
+      end
     end
 
-    it "questionが0個のcourseのname, descriptionが表示されていないこと" do
-      get courses_url
-      expect(response.body).to_not include(@course3.name)
-      expect(response.body).to_not include(@course3.description)
-      expect(response.body).to_not include(@course3.user.name)
+    context "questionが0個かつ、privateがfalseのcourseの場合" do
+      it "name, description, user_nameが表示されていないこと" do
+        get courses_url
+        expect(response.body).to_not include(@course3.name)
+        expect(response.body).to_not include(@course3.description)
+        expect(response.body).to_not include(@course3.user.name)
+      end
     end
   end
 
@@ -68,22 +74,31 @@ describe CoursesController, type: :request do
       FactoryBot.create(:question, course_id: @course1.id)
     end
 
-    it "questionがあるcourseへのリクエストが成功すること" do
-      get course_url(@course1.id)
-      expect(response.status).to eq 200
+    context "questionが存在するcourseの場合" do
+      it "リクエストが成功すること" do
+        get course_url(@course1.id)
+        expect(response.status).to eq 200
+      end
+  
+      it "name, description, user.name, questionの数が表示されていること" do
+        get course_url(@course1.id)
+        expect(response.body).to include(@course1.name)
+        expect(response.body).to include(@course1.description)
+        expect(response.body).to include(@course1.user.name)
+        expect(response.body).to include("全#{@course1.questions.length}問")
+      end
     end
 
-    it "courseのname, description, user.name, questionの数が表示されていること" do
-      get course_url(@course1.id)
-      expect(response.body).to include(@course1.name)
-      expect(response.body).to include(@course1.description)
-      expect(response.body).to include(@course1.user.name)
-      expect(response.body).to include("全#{@course1.questions.length}問")
-    end
+    context "questionが0のcourseだった場合" do
+      it "リダイレクトが行われること" do
+        get course_url(@course2.id)
+        expect(response.status).to eq 302
+      end
 
-    it "questionが0のcourseに遷移する時リダイレクトが行われること" do
-      get course_url(@course2.id)
-      expect(response.status).to eq 302
+      it "root_pathにリダイレクトすること" do
+        get course_url(@course2.id)
+        expect(response.status).to redirect_to root_url
+      end
     end
 
     context "courseが存在しない場合" do
@@ -93,34 +108,76 @@ describe CoursesController, type: :request do
   end
 
   describe "GET #new" do
-    it "ログインしていないユーザーの場合リダイレクトが行われること" do
-      get new_course_url
-      expect(response.status).to eq 302
+    context "ログインしていない場合" do
+      it "リダイレクトが行われること" do
+        get new_course_url
+        expect(response.status).to eq 302
+      end
+
+      it "new_user_session_pathにリダイレクトすること" do
+        get new_course_url
+        expect(response.status).to redirect_to new_user_session_path
+      end
     end
 
-    it "ログインしているユーザーの場合リクエストが成功すること" do
-      user = FactoryBot.create(:user)
-      sign_in user
-      get new_course_url
-      expect(response.status).to eq 200
+    context "ログインしている場合" do
+      it "リクエストが成功すること" do
+        user = FactoryBot.create(:user)
+        sign_in user
+        get new_course_url
+        expect(response.status).to eq 200
+      end
     end
   end
 
   describe "GET #edit" do
     before do
-      user = FactoryBot.create(:user)
-      @course = FactoryBot.create(:course, user_id: user.id)
+      @user = FactoryBot.create(:user)
+      @course = FactoryBot.create(:course, user_id: @user.id)
+      @question = FactoryBot.create(:question, course_id: @course.id)
+      @another_user = FactoryBot.create(:user)
+      sign_in @user
     end
 
-    it "存在するcourse_urlへのリクエストに成功すること" do
-      get courses_url
-      expect(response.status).to eq 200
+    context "course作成者がリクエストした場合" do
+      it "リクエストに成功すること" do
+        get edit_course_url(@course.id)
+        expect(response.status).to eq 200
+      end
+    
+      it "name, descriptionが表示されていること" do
+        get edit_course_url(@course.id)
+        expect(response.body).to include(@course.name)
+        expect(response.body).to include(@course.description)
+      end
+    end
+  
+    context "course作成者以外がリクエストした場合" do
+      it "リダイレクトすること" do
+        sign_in @another_user
+        get edit_course_url(@course.id)
+        expect(response.status).to eq 302
+      end
+  
+      it "course_urlにリダイレクトすること" do
+        sign_in @another_user
+        get edit_course_url(@course.id)
+        expect(response).to redirect_to course_url(@course.id)
+      end
     end
 
-    it "courseのname, descriptionが表示されていること" do
-      get courses_url(@course.id)
-      expect(response.body).to_not include(@course.name)
-      expect(response.body).to_not include(@course.description)
+    context "ログインしていない場合" do
+      it "リダイレクトすること" do
+        sign_out @user
+        get edit_course_url(@course.id)
+        expect(response.status).to eq 302
+      end
+
+      it "new_user_session_pathにリダイレクトすること" do
+        sign_out @user
+        get edit_course_url(@course.id)
+        expect(response).to redirect_to new_user_session_path
+      end
     end
 
     context "courseが存在しない場合" do
@@ -135,39 +192,62 @@ describe CoursesController, type: :request do
       sign_in @user
     end
 
-    context "パラメータが妥当な場合" do
-      it "リクエストが成功すること" do
+    context "ログインしていない場合" do
+      it "リダイレクトすること" do
+        sign_out @user
         post courses_url, params: { course: FactoryBot.attributes_for(:course, user_id: @user.id) }
         expect(response.status).to eq 302
       end
-
-      it "courseが登録されること" do
+  
+      it "courseが登録されないこと" do
+        sign_out @user
         expect do
           post courses_url, params: { course: FactoryBot.attributes_for(:course, user_id: @user.id) }
-        end.to change(Course, :count).by(1)
-      end
-
-      it "new_course_questionにリダイレクトすること" do
-        post courses_url, params: { course: FactoryBot.attributes_for(:course, user_id: @user.id) }
-        expect(response).to redirect_to new_course_question_path(Course.last.id)
-      end
-    end
-
-    context "パラメータが不正な場合" do
-      it "リクエストが成功すること" do
-        post courses_url, params: { course: FactoryBot.attributes_for(:course, name: nil) }
-        expect(response.status).to eq 200
-      end
-
-      it "courseが登録されないこと" do
-        expect do
-          post courses_url, params: { course: FactoryBot.attributes_for(:course, name: nil) }
         end.to_not change(Course, :count)
       end
 
-      it "エラー文言が表示されること" do
-        post courses_url, params: { course: FactoryBot.attributes_for(:course, name: nil) }
-        expect(response.body).to include("クイズの名前を入れてください")
+      it "new_user_session_urlにリダイレクトすること" do
+        sign_out @user
+        post courses_url, params: { course: FactoryBot.attributes_for(:course, user_id: @user.id) }
+        expect(response).to redirect_to new_user_session_url
+      end
+    end
+
+    context "ログインしている場合" do
+      context "パラメータが妥当な場合" do
+        it "リクエストが成功すること" do
+          post courses_url, params: { course: FactoryBot.attributes_for(:course, user_id: @user.id) }
+          expect(response.status).to eq 302
+        end
+  
+        it "courseが登録されること" do
+          expect do
+            post courses_url, params: { course: FactoryBot.attributes_for(:course, user_id: @user.id) }
+          end.to change(Course, :count).by(1)
+        end
+  
+        it "new_course_questionにリダイレクトすること" do
+          post courses_url, params: { course: FactoryBot.attributes_for(:course, user_id: @user.id) }
+          expect(response).to redirect_to new_course_question_path(Course.last.id)
+        end
+      end
+  
+      context "パラメータが不正な場合" do
+        it "リクエストが成功すること" do
+          post courses_url, params: { course: FactoryBot.attributes_for(:course, name: nil) }
+          expect(response.status).to eq 200
+        end
+  
+        it "courseが登録されないこと" do
+          expect do
+            post courses_url, params: { course: FactoryBot.attributes_for(:course, name: nil) }
+          end.to_not change(Course, :count)
+        end
+  
+        it "エラー文言が表示されること" do
+          post courses_url, params: { course: FactoryBot.attributes_for(:course, name: nil) }
+          expect(response.body).to include("クイズの名前を入れてください")
+        end
       end
     end
   end
@@ -176,42 +256,88 @@ describe CoursesController, type: :request do
     before do
       @user = FactoryBot.create(:user)
       @course = FactoryBot.create(:course, user_id: @user.id)
+      FactoryBot.create(:question, course_id: @course.id)
+      @another_user = FactoryBot.create(:user)
       sign_in @user
     end
 
-    context "パラメータが妥当な場合" do
-      it "リクエストが成功すること" do
+    context "ログインしていない場合" do
+      it "リダイレクトすること" do
+        sign_out @user
         put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
         expect(response.status).to eq 302
       end
-
-      it "nameが更新されること" do
+  
+      it "nameが変更されないこと" do
+        sign_out @user
         expect do
           put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
-        end.to change { Course.find(@course.id).name }.from("コースの名前").to("英単語テスト")
-      end
-
-      it "リダイレクトすること" do
-        put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
-        expect(response).to redirect_to new_course_question_path(@course.id)
-      end
-    end
-
-    context "パラメータが不正な場合" do
-      it "リクエストが成功すること" do
-        put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: nil) }
-        expect(response.status).to eq 200
-      end
-
-      it "nameが変更されないこと" do
-        expect do
-          put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: nil) }
         end.to_not change(Course.find(@course.id), :name)
       end
 
-      it "エラーが表示されること" do
-        put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: nil) }
-        expect(response.body).to include("クイズの名前を入れてください")
+      it "new_user_session_urlにリダイレクトすること" do
+        sign_out @user
+        put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
+        expect(response).to redirect_to new_user_session_url
+      end
+    end
+
+    context "course作成者以外がリクエストした場合" do
+      it "リダイレクトすること" do
+        sign_in @another_user
+        put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
+        expect(response.status).to eq 302
+      end
+  
+      it "nameが変更されないこと" do
+        sign_in @another_user
+        expect do
+          put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
+        end.to_not change(Course.find(@course.id), :name)
+      end
+
+      it "course_urlにリダイレクトすること" do
+        sign_in @another_user
+        put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
+        expect(response).to redirect_to course_url(@course.id)
+      end
+    end
+
+    context "course作成者がリクエストした場合" do
+      context "パラメータが妥当な場合" do
+        it "リクエストが成功すること" do
+          put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
+          expect(response.status).to eq 302
+        end
+  
+        it "nameが更新されること" do
+          expect do
+            put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
+          end.to change { Course.find(@course.id).name }.from("コースの名前").to("英単語テスト")
+        end
+  
+        it "new_course_question_pathにリダイレクトすること" do
+          put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
+          expect(response).to redirect_to new_course_question_path(@course.id)
+        end
+      end
+  
+      context "パラメータが不正な場合" do
+        it "リクエストが成功すること" do
+          put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: nil) }
+          expect(response.status).to eq 200
+        end
+  
+        it "nameが変更されないこと" do
+          expect do
+            put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: nil) }
+          end.to_not change(Course.find(@course.id), :name)
+        end
+  
+        it "エラーが表示されること" do
+          put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: nil) }
+          expect(response.body).to include("クイズの名前を入れてください")
+        end
       end
     end
   end
@@ -220,23 +346,89 @@ describe CoursesController, type: :request do
     before do
       @user = FactoryBot.create(:user)
       @course = FactoryBot.create(:course, user_id: @user.id)
+      3.times { FactoryBot.create(:question, course_id: @course.id) }
+      @another_user = FactoryBot.create(:user)
       sign_in @user
     end
 
-    it "リクエストが成功すること" do
-      delete course_url(@course.id)
-      expect(response.status).to eq 302
-    end
-
-    it "courseが削除されること" do
-      expect do
+    context "ログインしていない場合" do
+      it "リダイレクトすること" do
+        sign_out @user
         delete course_url(@course.id)
-      end.to change(Course, :count).by(-1)
+        expect(response.status).to eq 302
+      end
+  
+      it "courseが削除されないこと" do
+        sign_out @user
+        expect do
+          delete course_url(@course.id)
+        end.to change(Course, :count).by(0)
+      end
+
+      it "紐づいているquestionも削除されないこと" do
+        sign_out @user
+        expect do
+          delete course_url(@course.id)
+        end.to change(Question, :count).by(0)
+      end
+
+      it "new_user_sessionにリダイレクトすること" do
+        sign_out @user
+        delete course_url(@course.id)
+        expect(response).to redirect_to new_user_session_url
+      end
     end
 
-    it "ユーザーマイページにリダイレクトすること" do
-      delete course_url(@course.id)
-      expect(response).to redirect_to user_path(@course.user.id)
+    context "作成者以外がリクエストした場合" do
+      it "リダイレクトすること" do
+        sign_in @another_user
+        delete course_url(@course.id)
+        expect(response.status).to eq 302
+      end
+  
+      it "courseが削除されないこと" do
+        sign_in @another_user
+        expect do
+          delete course_url(@course.id)
+        end.to change(Course, :count).by(0)
+      end
+
+      it "紐づいているquestionも削除されないこと" do
+        sign_in @another_user
+        expect do
+          delete course_url(@course.id)
+        end.to change(Question, :count).by(0)
+      end
+
+      it "course_urlにリダイレクトすること" do
+        sign_in @another_user
+        delete course_url(@course.id)
+        expect(response).to redirect_to course_url(@course.id)
+      end
+    end
+
+    context "作成者がリクエストした場合" do
+      it "リクエストが成功すること" do
+        delete course_url(@course.id)
+        expect(response.status).to eq 302
+      end
+  
+      it "courseが削除されること" do
+        expect do
+          delete course_url(@course.id)
+        end.to change(Course, :count).by(-1)
+      end
+
+      it "紐づいているquestionも削除されること" do
+        expect do
+          delete course_url(@course.id)
+        end.to change(Question, :count).by(-3)
+      end
+  
+      it "ユーザーマイページにリダイレクトすること" do
+        delete course_url(@course.id)
+        expect(response).to redirect_to user_path(@course.user.id)
+      end
     end
   end
 end
