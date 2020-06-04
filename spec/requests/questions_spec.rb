@@ -337,7 +337,7 @@ describe QuestionsController, type: :request do
 
         it "new_course_questionにリダイレクトすること" do
           put course_question_url(course_id: @course.id, id: @question.id), params: { question: FactoryBot.attributes_for(:question, sentence: "第1問") }
-          expect(response).to redirect_to new_course_question_path(@course.id)
+          expect(response).to redirect_to new_course_question_url(@course.id)
         end
       end
 
@@ -347,7 +347,7 @@ describe QuestionsController, type: :request do
           expect(response.status).to eq 200
         end
 
-        it "sentenceが更新されること" do
+        it "sentenceが更新されないこと" do
           expect do
             put course_question_url(course_id: @course.id, id: @question.id), params: { question: FactoryBot.attributes_for(:question, sentence: nil) }
           end.to_not change(Question.find(@question.id), :sentence)
@@ -367,6 +367,87 @@ describe QuestionsController, type: :request do
 
     context "questionが存在しない場合" do
       subject { -> { put course_question_url(course_id: @course.id, id: @question.id + 1), params: { question: FactoryBot.attributes_for(:question, sentence: "第1問") } } }
+      it { is_expected.to raise_error ActiveRecord::RecordNotFound }
+    end
+  end
+
+  describe "DELETE #destroy" do
+    before do
+      @user = FactoryBot.create(:user)
+      @course = FactoryBot.create(:course, user_id: @user.id)
+      @question = FactoryBot.create(:question, course_id: @course.id)
+      @another_user = FactoryBot.create(:user)
+      sign_in @user
+    end
+
+    context "ログインしていない場合" do
+      it "リダイレクトすること" do
+        sign_out @user
+        delete course_question_url(course_id: @course.id, id: @question.id)
+        expect(response.status).to eq 302
+      end
+
+      it "questionが削除されないこと" do
+        sign_out @user
+        expect do
+          delete course_question_url(course_id: @course.id, id: @question.id)
+        end.to change(Question, :count).by(0)
+      end
+
+      it "new_user_session_urlにリダイレクトすること" do
+        sign_out @user
+        delete course_question_url(course_id: @course.id, id: @question.id)
+        expect(response).to redirect_to new_user_session_url
+      end
+      
+    end
+
+    context "作成者以外がリクエストした場合" do
+      it "リダイレクトすること" do
+        sign_in @another_user
+        delete course_question_url(course_id: @course.id, id: @question.id)
+        expect(response.status).to eq 302
+      end
+
+      it "questionが削除されないこと" do
+        sign_in @another_user
+        expect do
+          delete course_question_url(course_id: @course.id, id: @question.id)
+        end.to change(Question, :count).by(0)
+      end
+
+      it "course_urlにリダイレクトすること" do
+        sign_in @another_user
+        delete course_question_url(course_id: @course.id, id: @question.id)
+        expect(response).to redirect_to course_url(@course.id)
+      end
+    end
+
+    context "作成者がリクエストした場合" do
+      it "リダイレクトすること" do
+        delete course_question_url(course_id: @course.id, id: @question.id)
+        expect(response.status).to eq 302
+      end
+
+      it "questionが削除されること" do
+        expect do
+          delete course_question_url(course_id: @course.id, id: @question.id)
+        end.to change(Question, :count).by(-1)
+      end
+
+      it "new_course_question_urlにリダイレクトすること" do
+        delete course_question_url(course_id: @course.id, id: @question.id)
+        expect(response).to redirect_to new_course_question_url(@course.id)
+      end
+    end
+
+    context "courseが存在しない場合" do
+      subject { -> { delete course_question_url(course_id: @course.id + 1, id: @question.id) } }
+      it { is_expected.to raise_error ActiveRecord::RecordNotFound }
+    end
+
+    context "questionが存在しない場合" do
+      subject { -> { delete course_question_url(course_id: @course.id, id: @question.id + 1) } }
       it { is_expected.to raise_error ActiveRecord::RecordNotFound }
     end
   end
