@@ -12,7 +12,7 @@ Rails.application.routes.draw do
     resources :questions, except: [:show]
   end
 
-  resources :users, only: [:show] do
+  resources :users, only: [:index] do
     member do
       get "profile_edit"
       patch "profile_update"
