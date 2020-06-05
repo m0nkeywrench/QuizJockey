@@ -12,7 +12,7 @@
   .header__right
     - if user_signed_in?
       .header__right--link
-        = link_to "マイページ", user_path(current_user.id), class: "white-link"
+        = link_to "マイページ", users_path, class: "white-link"
       .header__right--link
         = link_to "ログアウト", destroy_user_session_path, method: :delete, class: "white-link"
     - else
