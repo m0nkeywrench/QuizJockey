@@ -1,0 +1,36 @@
+.notice {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  line-height: 45px;
+  color: white;
+  @include bigFont();
+  background-color: darkslategray;
+  text-align: center;
+  -webkit-animation: fade-in-out 5s ease 0s forwards;
+  animation: fade-in-out 5s ease 0s forwards;
+  visibility: hidden;
+  z-index: 1;
+}
+.alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  line-height: 45px;
+  color: white;
+  @include bigFont();
+  background-color: #b32027;
+  text-align: center;
+  -webkit-animation: fade-in-out 5s ease 0s forwards;
+  animation: fade-in-out 5s ease 0s forwards;
+  visibility: hidden;
+  z-index: 1;
+}
+
+@-webkit-keyframes fade-in-out {
+  0% {visibility: hidden; opacity: 0;}
+  5% {visibility: visible; opacity: 1;}
+  100% {visibility: hidden; opacity: 0;}
+}
