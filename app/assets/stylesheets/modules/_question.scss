@@ -89,6 +89,7 @@
   border-radius: 10px;
   color: black;
   font-size: 0.9rem;
+  border: $silverBorder;
 
   &:hover {
     @include hoverBox();
