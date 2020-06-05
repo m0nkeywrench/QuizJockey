@@ -1,8 +1,8 @@
 .mypage__left--list
   ▼ メニュー
 
-= link_to user_path(current_user.id), class: "gray-link" do
-  - if controller.controller_name == "users" && controller.action_name == "show"
+= link_to users_path, class: "gray-link" do
+  - if controller.controller_name == "users" && controller.action_name == "index"
     .mypage__left--list.current-list
       作成クイズ一覧
   - else

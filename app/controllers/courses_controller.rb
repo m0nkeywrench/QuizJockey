@@ -36,7 +36,7 @@ class CoursesController < ApplicationController
 
   def destroy
     Course.find(params[:id]).destroy
-    redirect_to user_path(current_user.id), notice: "削除しました"
+    redirect_to users_path, notice: "削除しました"
   end
 
   private
