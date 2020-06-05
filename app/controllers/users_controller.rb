@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   def profile_update
     if @user.update(user_params)
-      redirect_to user_path(id: current_user.id)
+      redirect_to user_path(id: current_user.id), notice: "ユーザー情報を編集しました"
     else
       render action: :profile_edit
     end

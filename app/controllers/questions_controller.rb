@@ -36,7 +36,7 @@ class QuestionsController < ApplicationController
 
   def destroy
     Question.find(params[:id]).destroy
-    redirect_to new_course_question_path(course_id: params[:course_id])
+    redirect_to new_course_question_path(course_id: params[:course_id]), notice: "削除しました"
   end
 
   private
