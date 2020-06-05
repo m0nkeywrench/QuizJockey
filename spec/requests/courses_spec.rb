@@ -427,7 +427,7 @@ describe CoursesController, type: :request do
 
       it "ユーザーマイページにリダイレクトすること" do
         delete course_url(@course.id)
-        expect(response).to redirect_to user_path(@course.user.id)
+        expect(response).to redirect_to users_url
       end
     end
   end

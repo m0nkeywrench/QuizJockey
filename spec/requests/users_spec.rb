@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe UsersController, type: :request do
-  describe "GET #show" do
+  describe "GET #index" do
     before do
       @user = FactoryBot.create(:user)
       @course = FactoryBot.create(:course, user_id: @user.id)
@@ -11,38 +11,25 @@ describe UsersController, type: :request do
     context "ログインしていない場合" do
       it "リダイレクトすること" do
         sign_out @user
-        get user_url(@user.id)
+        get users_url
         expect(response.status).to eq 302
       end
 
       it "new_user_session_urlにリダイレクトすること" do
         sign_out @user
-        get user_url(@user.id)
+        get users_url
         expect(response).to redirect_to new_user_session_url
       end
     end
 
     context "ログインしている場合" do
       it "リクエストに成功すること" do
-        get user_url(@user.id)
+        get users_url
         expect(response.status).to eq 200
       end
 
       it "courseのname, questionの数がレスポンスに含まれること" do
-        get user_url(@user.id)
-        expect(response.body).to include(@course.name)
-        expect(response.body).to include(@course.questions.length.to_s)
-      end
-    end
-
-    context "userが存在しない場合" do
-      it "リクエストに成功すること" do
-        get user_url(@user.id + 1)
-        expect(response.status).to eq 200
-      end
-
-      it "urlのidに依存せずに、ログイン中のuserのcourseのname, questionの数がレスポンスに含まれること" do
-        get user_url(@user.id + 1)
+        get users_url
         expect(response.body).to include(@course.name)
         expect(response.body).to include(@course.questions.length.to_s)
       end
@@ -152,7 +139,7 @@ describe UsersController, type: :request do
 
         it "user_urlにリダイレクトすること" do
           patch profile_update_user_url(@user.id), params: { user: { name: "change", nickname: "変更後" } }
-          expect(response).to redirect_to user_url(@user.id)
+          expect(response).to redirect_to users_url
         end
       end
 
@@ -200,7 +187,7 @@ describe UsersController, type: :request do
 
         it "user_urlにリダイレクトすること" do
           patch profile_update_user_url(@user.id + 1), params: { user: { name: "change", nickname: "変更後" } }
-          expect(response).to redirect_to user_url(@user.id)
+          expect(response).to redirect_to users_url
         end
       end
     end
