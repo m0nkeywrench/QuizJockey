@@ -2,16 +2,13 @@ class CoursesController < ApplicationController
   before_action :move_to_login, except: [:index, :show]
   before_action :set_course, only: [:show, :edit, :update, :destroy]
   before_action :move_to_course_detail, only: [:edit, :update, :destroy]
-  
+
   def index
-    @courses = Course.get_course_list.paginate(params[:page])
+    @courses = Course.course_list.paginate(params[:page])
   end
 
   def show
-    # 問題数0のクイズへのリクエストはトップページへリダイレクトする
-    if @course.questions.blank?
-      redirect_to root_path
-    end
+    redirect_to root_path if @course.questions.blank? # 問題数0のクイズへのリクエストはトップページへリダイレクトする
   end
 
   def new
@@ -27,8 +24,7 @@ class CoursesController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @course.update(course_params)
@@ -37,13 +33,14 @@ class CoursesController < ApplicationController
       render action: :edit
     end
   end
-  
+
   def destroy
     Course.find(params[:id]).destroy
     redirect_to user_path(current_user.id)
   end
 
   private
+
   def course_params
     params.require(:course).permit(:name, :description, :private).merge(user_id: current_user.id)
   end

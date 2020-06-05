@@ -307,7 +307,7 @@ describe QuestionsController, type: :request do
         put course_question_url(course_id: @course.id, id: @question.id), params: { question: FactoryBot.attributes_for(:question, sentence: "第1問") }
         expect(response.status).to eq 302
       end
-  
+
       it "sentenceが変更されないこと" do
         sign_in @another_user
         expect do
@@ -399,7 +399,6 @@ describe QuestionsController, type: :request do
         delete course_question_url(course_id: @course.id, id: @question.id)
         expect(response).to redirect_to new_user_session_url
       end
-      
     end
 
     context "作成者以外がリクエストした場合" do

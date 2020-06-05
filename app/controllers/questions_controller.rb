@@ -35,15 +35,16 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    question = Question.find(params[:id]).destroy
+    Question.find(params[:id]).destroy
     redirect_to new_course_question_path(course_id: params[:course_id])
   end
-  
+
   private
+
   def question_params
     params.require(:question).permit(:sentence, :answer, :wrong1, :wrong2, :wrong3, :commentary).merge(course_id: params[:course_id])
   end
-  
+
   def move_to_login
     redirect_to new_user_session_path unless user_signed_in?
   end

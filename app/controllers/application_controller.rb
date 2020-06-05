@@ -3,12 +3,14 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   protected
+
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :nickname])
   end
 
   private
-  def after_sign_in_path_for(resource_or_scope)
+
+  def after_sign_in_path_for(*)
     user_path(current_user.id)
   end
 end

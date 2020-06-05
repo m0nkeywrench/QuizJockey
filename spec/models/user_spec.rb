@@ -79,11 +79,11 @@ describe User do
     it "正しくname, nickname, email, password, password_confirminationがあれば登録できること" do
       password = Faker::Internet.password(min_length: 8)
       user = @user.update(
-        name: "a1", 
-        nickname: "a", 
-        email: Faker::Internet.free_email, 
+        name: "a1",
+        nickname: "a",
+        email: Faker::Internet.free_email,
         password: password,
-        password_confirmation: password 
+        password_confirmation: password
       )
       expect(user).to eq(true)
     end
@@ -92,7 +92,7 @@ describe User do
       user = @user.update(name: "")
       expect(user).to eq(false)
     end
-    
+
     it "nameが英数字以外の文字を含んでいると更新できないこと" do
       user = @user.update(name: "a1あ")
       expect(user).to eq(false)

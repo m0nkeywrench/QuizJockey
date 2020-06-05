@@ -19,7 +19,7 @@ describe Question do
     end
 
     it "存在しないcourseのcourse_idがない場合登録できないこと" do
-      question = build(:question, course_id: @course.id + 1 )
+      question = build(:question, course_id: @course.id + 1)
       question.valid?
       expect(question.errors[:course]).to include("を入力してください")
     end
@@ -74,7 +74,7 @@ describe Question do
         wrong1: Faker::Name.name,
         wrong2: Faker::Name.name,
         wrong3: Faker::Name.name,
-        commentary: Faker::Name.name,
+        commentary: Faker::Name.name
       )
       expect(question).to eq(true)
     end

@@ -6,8 +6,7 @@ class UsersController < ApplicationController
     @courses = current_user.courses.includes(:questions)
   end
 
-  def profile_edit
-  end
+  def profile_edit; end
 
   def profile_update
     if @user.update(user_params)
@@ -18,6 +17,7 @@ class UsersController < ApplicationController
   end
 
   private
+
   def user_params
     params.require(:user).permit(:name, :nickname)
   end

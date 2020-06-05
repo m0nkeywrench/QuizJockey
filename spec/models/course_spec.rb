@@ -78,7 +78,7 @@ describe Course do
     end
   end
 
-  describe "#get_course_list" do
+  describe "#course_list" do
     before do
       @user = FactoryBot.create(:user)
       @available_course = FactoryBot.create(:course, private: false, user_id: @user.id)
@@ -87,19 +87,19 @@ describe Course do
       @private_course = FactoryBot.create(:course, private: true, user_id: @user.id)
       FactoryBot.create(:question, course_id: @private_course.id)
 
-      @making_course = FactoryBot.create(:course, private:true, user_id: @user.id)
+      @making_course = FactoryBot.create(:course, private: true, user_id: @user.id)
     end
 
     it "問題数0のcourseがカットされること" do
-      expect(Course.get_course_list).to_not include(@making_course)
+      expect(Course.course_list).to_not include(@making_course)
     end
 
     it "privateがtrueのコースがカットされること" do
-      expect(Course.get_course_list).to_not include(@private_course)
+      expect(Course.course_list).to_not include(@private_course)
     end
 
     it "問題数が0ではないかつprivateがfalseのコースがカットされないこと" do
-      expect(Course.get_course_list).to include(@available_course)
+      expect(Course.course_list).to include(@available_course)
     end
   end
 

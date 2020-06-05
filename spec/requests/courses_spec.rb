@@ -5,30 +5,30 @@ describe CoursesController, type: :request do
     before do
       user1 = FactoryBot.create(:user)
       @course1 = FactoryBot.create(
-        :course, 
-        name: "英単語テスト", 
-        description: "toeic必須英単語500", 
-        private: false, 
+        :course,
+        name: "英単語テスト",
+        description: "toeic必須英単語500",
+        private: false,
         user_id: user1.id
       )
       FactoryBot.create(:question, course_id: @course1.id)
 
       user2 = FactoryBot.create(:user)
       @course2 = FactoryBot.create(
-        :course, 
-        name: "コンプライアンス研修", 
-        description: "景品表示法について", 
-        private: true, 
+        :course,
+        name: "コンプライアンス研修",
+        description: "景品表示法について",
+        private: true,
         user_id: user2.id
       )
       FactoryBot.create(:question, course_id: @course2.id)
 
       user3 = FactoryBot.create(:user)
       @course3 = FactoryBot.create(
-        :course, 
-        name: "作成中テスト", 
-        description: "これから作る", 
-        private: false, 
+        :course,
+        name: "作成中テスト",
+        description: "これから作る",
+        private: false,
         user_id: user3.id
       )
     end
@@ -79,7 +79,7 @@ describe CoursesController, type: :request do
         get course_url(@course1.id)
         expect(response.status).to eq 200
       end
-  
+
       it "name, description, user.name, questionの数が表示されていること" do
         get course_url(@course1.id)
         expect(response.body).to include(@course1.name)
@@ -144,21 +144,21 @@ describe CoursesController, type: :request do
         get edit_course_url(@course.id)
         expect(response.status).to eq 200
       end
-    
+
       it "name, descriptionが表示されていること" do
         get edit_course_url(@course.id)
         expect(response.body).to include(@course.name)
         expect(response.body).to include(@course.description)
       end
     end
-  
+
     context "course作成者以外がリクエストした場合" do
       it "リダイレクトすること" do
         sign_in @another_user
         get edit_course_url(@course.id)
         expect(response.status).to eq 302
       end
-  
+
       it "course_urlにリダイレクトすること" do
         sign_in @another_user
         get edit_course_url(@course.id)
@@ -198,7 +198,7 @@ describe CoursesController, type: :request do
         post courses_url, params: { course: FactoryBot.attributes_for(:course, user_id: @user.id) }
         expect(response.status).to eq 302
       end
-  
+
       it "courseが登録されないこと" do
         sign_out @user
         expect do
@@ -219,31 +219,31 @@ describe CoursesController, type: :request do
           post courses_url, params: { course: FactoryBot.attributes_for(:course, user_id: @user.id) }
           expect(response.status).to eq 302
         end
-  
+
         it "courseが登録されること" do
           expect do
             post courses_url, params: { course: FactoryBot.attributes_for(:course, user_id: @user.id) }
           end.to change(Course, :count).by(1)
         end
-  
+
         it "new_course_questionにリダイレクトすること" do
           post courses_url, params: { course: FactoryBot.attributes_for(:course, user_id: @user.id) }
           expect(response).to redirect_to new_course_question_path(Course.last.id)
         end
       end
-  
+
       context "パラメータが不正な場合" do
         it "リクエストが成功すること" do
           post courses_url, params: { course: FactoryBot.attributes_for(:course, name: nil) }
           expect(response.status).to eq 200
         end
-  
+
         it "courseが登録されないこと" do
           expect do
             post courses_url, params: { course: FactoryBot.attributes_for(:course, name: nil) }
           end.to_not change(Course, :count)
         end
-  
+
         it "エラー文言が表示されること" do
           post courses_url, params: { course: FactoryBot.attributes_for(:course, name: nil) }
           expect(response.body).to include("クイズの名前を入れてください")
@@ -267,7 +267,7 @@ describe CoursesController, type: :request do
         put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
         expect(response.status).to eq 302
       end
-  
+
       it "nameが変更されないこと" do
         sign_out @user
         expect do
@@ -288,7 +288,7 @@ describe CoursesController, type: :request do
         put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
         expect(response.status).to eq 302
       end
-  
+
       it "nameが変更されないこと" do
         sign_in @another_user
         expect do
@@ -309,31 +309,31 @@ describe CoursesController, type: :request do
           put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
           expect(response.status).to eq 302
         end
-  
+
         it "nameが更新されること" do
           expect do
             put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
           end.to change { Course.find(@course.id).name }.from("コースの名前").to("英単語テスト")
         end
-  
+
         it "new_course_question_pathにリダイレクトすること" do
           put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: "英単語テスト") }
           expect(response).to redirect_to new_course_question_path(@course.id)
         end
       end
-  
+
       context "パラメータが不正な場合" do
         it "リクエストが成功すること" do
           put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: nil) }
           expect(response.status).to eq 200
         end
-  
+
         it "nameが変更されないこと" do
           expect do
             put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: nil) }
           end.to_not change(Course.find(@course.id), :name)
         end
-  
+
         it "エラーが表示されること" do
           put course_url(@course.id), params: { course: FactoryBot.attributes_for(:course, name: nil) }
           expect(response.body).to include("クイズの名前を入れてください")
@@ -357,7 +357,7 @@ describe CoursesController, type: :request do
         delete course_url(@course.id)
         expect(response.status).to eq 302
       end
-  
+
       it "courseが削除されないこと" do
         sign_out @user
         expect do
@@ -385,7 +385,7 @@ describe CoursesController, type: :request do
         delete course_url(@course.id)
         expect(response.status).to eq 302
       end
-  
+
       it "courseが削除されないこと" do
         sign_in @another_user
         expect do
@@ -412,7 +412,7 @@ describe CoursesController, type: :request do
         delete course_url(@course.id)
         expect(response.status).to eq 302
       end
-  
+
       it "courseが削除されること" do
         expect do
           delete course_url(@course.id)
@@ -424,7 +424,7 @@ describe CoursesController, type: :request do
           delete course_url(@course.id)
         end.to change(Question, :count).by(-3)
       end
-  
+
       it "ユーザーマイページにリダイレクトすること" do
         delete course_url(@course.id)
         expect(response).to redirect_to user_path(@course.user.id)
