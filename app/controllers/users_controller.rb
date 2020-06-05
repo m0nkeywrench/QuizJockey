@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
-  before_action :move_to_login, only: [:show, :profile_edit, :profile_update]
+  before_action :move_to_login, only: [:index, :profile_edit, :profile_update]
   before_action :set_user, only: [:profile_edit, :profile_update]
 
-  def show
+  def index
     @courses = current_user.courses.includes(:questions)
   end
 
@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
   def profile_update
     if @user.update(user_params)
-      redirect_to user_path(id: current_user.id), notice: "ユーザー情報を編集しました"
+      redirect_to users_path, notice: "ユーザー情報を編集しました"
     else
       render action: :profile_edit
     end
