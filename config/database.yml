@@ -50,6 +50,6 @@ test:
 production:
   <<: *default
   database: QuizJockey_production
-  username: root
+  username: QuizJockey
   password: <%= ENV['QUIZJOCKEY_DATABASE_PASSWORD'] %>
   socket: /var/lib/mysql/mysql.sock
