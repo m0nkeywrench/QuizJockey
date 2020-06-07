@@ -25,14 +25,14 @@
           - @courses.each do |course|
             .admin-list
               .admin-list__name
-                = course.name
+                = link_to course.name, course_path(course.id), target: ["_blank"], class: "blue-link"
               .admin-list__numOfQuestions
                 = "全#{course.questions.length}問"
               .admin-list__private
                 - if course.private
-                  = link_to "非公開", course_path(course.id), target: ["_blank"], class: "blue-link"
+                  非公開
                 - else 
-                  = "公開中"
+                  公開中
               .admin-list__edit
                 = link_to "詳細", new_course_question_path(course.id), class: "blue-link"
 
