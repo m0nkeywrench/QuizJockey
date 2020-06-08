@@ -46,7 +46,7 @@
                         .question-info__left--inner
                           = "答え: #{q.answer}"
                         .question-info__left--inner
-                          = "誤答: #{q.wrong1},#{q.wrong2},#{q.wrong3}"
+                          = "誤答: #{q.wrong1}, #{q.wrong2}, #{q.wrong3}"
                       .question-info__right
                         .question-info__right--inner 
                           = link_to "編集", edit_course_question_path(course_id: @course.id, id: q.id), class: "blue-link"
