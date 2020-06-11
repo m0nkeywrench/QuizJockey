@@ -13,6 +13,7 @@
 
 - Ruby
 - Ruby on Rails
+- React.js (react-rails)
 - MySQL
 - Github
 - AWS
@@ -56,9 +57,3 @@ URLを知っているひとだけに公開することも!
 <img width="300" src="https://user-images.githubusercontent.com/59466775/84254529-50390600-ab4c-11ea-8577-25f9fef3dbdf.png">
 
 ※マイページ左のメニュー「作成クイズ一覧」>「詳細」から、後からでも自由に問題の追加・削除などが行えます。
-
-## 使用技術詳細
-- HAML
-- SCSS
-- React.js (react-rails)
-- devise
